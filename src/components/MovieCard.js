@@ -66,7 +66,7 @@ export const MovieCard = ({ currentMovie, isDesktopDevice }) => {
                 alt="Movie Poster"
                 sx={{
                   borderRadius: 2,
-                  width: isDesktopDevice ? 550 : 350,
+                  width: isDesktopDevice ? 550 : 345,
                 }}
               />
               <CardContent>
