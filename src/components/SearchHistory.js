@@ -3,10 +3,8 @@ import { FiPlus, FiMinus } from "react-icons/fi";
 import { ActionTypes } from "../state/reducer";
 import { styled } from "@mui/material/styles";
 import { Switch } from "@mui/material";
-// import { StyledPercentage } from "./StyledPercentage";
 import {
   Box,
-  Container,
   ImageList,
   ImageListItem,
   ImageListItemBar,
@@ -79,18 +77,32 @@ export const SearchHistory = ({ searchHistory, dispatch, isDesktopDevice }) => {
                 <ImageListItemBar
                   subtitle={movie.Title}
                   actionIcon={
-                    <IconButton
-                      sx={{ color: "#00ff1a" }}
-                      aria-label={`info about ${movie.Title}`}
-                      onClick={() =>
-                        dispatch({
-                          type: ActionTypes.REPLACE_CURRENT_MOVIE,
-                          payload: movie,
-                        })
-                      }
-                    >
-                      <FiPlus />
-                    </IconButton>
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      <IconButton
+                        sx={{ color: "#ff0400" }}
+                        aria-label={`info about ${movie.Title}`}
+                        onClick={() =>
+                          dispatch({
+                            type: ActionTypes.REMOVE_MOVIE,
+                            payload: movie,
+                          })
+                        }
+                      >
+                        <FiMinus />
+                      </IconButton>
+                      <IconButton
+                        sx={{ color: "#00ff1a" }}
+                        aria-label={`info about ${movie.Title}`}
+                        onClick={() =>
+                          dispatch({
+                            type: ActionTypes.REPLACE_CURRENT_MOVIE,
+                            payload: movie,
+                          })
+                        }
+                      >
+                        <FiPlus />
+                      </IconButton>
+                    </div>
                   }
                   p={1}
                 />
