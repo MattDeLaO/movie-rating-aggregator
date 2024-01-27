@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { FiPlus, FiMinus } from "react-icons/fi";
 import { ActionTypes } from "../state/reducer";
-import { Box, Typography } from "@mui/material";
-import { StyledPercentage } from "./StyledPercentage";
+import { styled } from "@mui/material/styles";
+import { Switch } from "@mui/material";
+// import { StyledPercentage } from "./StyledPercentage";
 import {
+  Box,
+  Container,
   ImageList,
   ImageListItem,
   ImageListItemBar,
   IconButton,
-  Switch,
+  Typography,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
 
 const HistorySwitch = styled(Switch)({
   width: 42,
@@ -24,7 +26,7 @@ const HistorySwitch = styled(Switch)({
       transform: "translateX(16px)",
       color: "#fff",
       "& + .MuiSwitch-track": {
-        backgroundColor: "#65C466",
+        backgroundColor: "#00ff1a",
         opacity: 1,
         border: 0,
       },
@@ -49,14 +51,12 @@ export const SearchHistory = ({ searchHistory, dispatch, isDesktopDevice }) => {
   const isSearchHistory = Object.keys(searchHistory).length !== 0;
   return (
     isSearchHistory && (
-      <Box sx={{ minHeight: 400, margin: 2 }}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+      <Box minHeight={400} m={2}>
+        <Box
+          display={"flex"}
+          flexDirection={"row"}
+          alignItems={"center"}
+          justifyContent={"center"}
         >
           <Typography variant="h5" fontWeight="bold" mr={1}>
             Search History
@@ -65,11 +65,9 @@ export const SearchHistory = ({ searchHistory, dispatch, isDesktopDevice }) => {
             checked={isShowHistoryEnabled}
             onChange={() => setShowHistoryEnabledStatus(!isShowHistoryEnabled)}
           />
-        </div>
+        </Box>
         {isShowHistoryEnabled && (
-          <ImageList
-            sx={{ maxWidth: 500, maxHeight: isDesktopDevice ? 700 : 450 }}
-          >
+          <ImageList maxWidth={500} maxHeight={isDesktopDevice ? 700 : 450}>
             {searchHistory.map((movie) => (
               <ImageListItem key={movie.Poster}>
                 <img

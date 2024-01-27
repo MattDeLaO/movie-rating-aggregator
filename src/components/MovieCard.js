@@ -70,7 +70,7 @@ export const MovieCard = ({ currentMovie, isDesktopDevice }) => {
                 }}
               />
               <CardContent>
-                <Typography variant="h4" sx={{ color: "white" }}>
+                <Typography variant="h4" color={"#FFFF"}>
                   Average Rating:
                 </Typography>
                 <StyledPercentage overallRating={currentMovie.averageRating} />
@@ -78,18 +78,10 @@ export const MovieCard = ({ currentMovie, isDesktopDevice }) => {
             </CardActionArea>
           </Card>
         </GradientBackground>
-        <Dialog
-          sx={{ background: "#00039689" }}
-          open={openDialogue}
-          onClose={() => setOpenDialogue(false)}
-        >
-          <DialogTitle
-            sx={{
-              background: "#0b010e",
-              color: "white",
-            }}
-            fontWeight="bold"
-          >{`${currentMovie.Title} (${currentMovie.Year})`}</DialogTitle>
+        <Dialog open={openDialogue} onClose={() => setOpenDialogue(false)}>
+          <DialogTitle bgcolor={"#0b010e"} color={"#FFFF"} fontWeight="bold">
+            {`${currentMovie.Title} (${currentMovie.Year})`}
+          </DialogTitle>
           <IconButton
             aria-label="close"
             onClick={() => setOpenDialogue(false)}
@@ -97,7 +89,7 @@ export const MovieCard = ({ currentMovie, isDesktopDevice }) => {
               position: "absolute",
               right: 8,
               top: 8,
-              color: (theme) => theme.palette.grey[500],
+              color: "grey",
             }}
           >
             <IoClose />

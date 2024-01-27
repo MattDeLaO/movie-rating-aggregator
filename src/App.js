@@ -1,8 +1,6 @@
 import { useState, useReducer } from "react";
-import { Layout } from "./components/Layout";
-import { SearchHistory } from "./components/SearchHistory";
+import { Layout, SearchHistory, MovieCard } from "./components";
 import { appStateReducer, initialState, ActionTypes } from "./state/reducer";
-import { MovieCard } from "./components/MovieCard";
 import {
   Box,
   TextField,
@@ -49,6 +47,12 @@ const StyledTextField = styled(TextField)({
   width: 300,
 });
 
+const ResultsSection = styled(Box)({
+  display: "flex",
+  justifyContent: "space-evenly",
+  marginTop: 4,
+});
+
 export const App = () => {
   const [state, dispatch] = useReducer(appStateReducer, initialState);
   const [searchInput, setSearchInput] = useState("");
@@ -70,10 +74,10 @@ export const App = () => {
       searchMovies(searchInput);
     }
   };
-  // console.log("what is current movie:", state.currentMovie);
+
   return (
     <Layout>
-      <Container sx={{ padding: 5 }}>
+      <Container>
         <Typography variant="h2">Worth the Watch?</Typography>
         <Typography variant="body2">
           A simple app designed to give you the average rating from IMDb,
@@ -90,12 +94,8 @@ export const App = () => {
           />
         </Form>
       </Container>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: isDesktopDevice ? "row" : "column",
-          justifyContent: "space-evenly",
-        }}
+      <ResultsSection
+        sx={{ flexDirection: isDesktopDevice ? "row" : "column" }}
       >
         <MovieCard
           currentMovie={state.currentMovie}
@@ -106,7 +106,7 @@ export const App = () => {
           dispatch={dispatch}
           isDesktopDevice={isDesktopDevice}
         />
-      </div>
+      </ResultsSection>
     </Layout>
   );
 };
