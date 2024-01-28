@@ -3,6 +3,7 @@ import { Layout, SearchHistory, MovieCard } from "./components";
 import { appStateReducer, initialState, ActionTypes } from "./state/reducer";
 import {
   Box,
+  Switch,
   TextField,
   Typography,
   Container,
@@ -16,6 +17,38 @@ const Form = styled("form")({
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
+});
+
+const HistorySwitch = styled(Switch)({
+  width: 42,
+  height: 26,
+  padding: 0,
+  "& .MuiSwitch-switchBase": {
+    padding: 0,
+    margin: 2,
+    transitionDuration: "300ms",
+    "&.Mui-checked": {
+      transform: "translateX(16px)",
+      color: "#fff",
+      "& + .MuiSwitch-track": {
+        backgroundColor: "#00ff1a",
+        opacity: 1,
+        border: 0,
+      },
+      "&.Mui-disabled + .MuiSwitch-track": {
+        opacity: 0.5,
+      },
+    },
+    "&.Mui-focusVisible .MuiSwitch-thumb": {
+      color: "#33cf4d",
+      border: "6px solid #fff",
+    },
+  },
+  "& .MuiSwitch-track": {
+    borderRadius: 26 / 2,
+    backgroundColor: "#39393D",
+    opacity: 1,
+  },
 });
 
 const StyledTextField = styled(TextField)({
@@ -56,6 +89,7 @@ const ResultsSection = styled(Box)({
 
 export const App = () => {
   const [state, dispatch] = useReducer(appStateReducer, initialState);
+  const [isSearchHistoryEnabled, setSearchHistoryEnabled] = useState(true);
   const [searchInput, setSearchInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const isDesktopDevice = useMediaQuery("(min-width:805px)");
@@ -105,6 +139,21 @@ export const App = () => {
               alt="Loading Spinner"
             />
           )}
+          <Box
+            display={"flex"}
+            flexDirection={"row"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            margin={3}
+          >
+            <Typography variant="h5" fontWeight="bold" mr={1}>
+              Search History
+            </Typography>
+            <HistorySwitch
+              checked={isSearchHistoryEnabled}
+              onChange={() => setSearchHistoryEnabled(!isSearchHistoryEnabled)}
+            />
+          </Box>
         </Form>
       </Container>
       <ResultsSection
@@ -115,9 +164,10 @@ export const App = () => {
           isDesktopDevice={isDesktopDevice}
         />
         <SearchHistory
-          searchHistory={state.searchHistory}
           dispatch={dispatch}
           isDesktopDevice={isDesktopDevice}
+          isSearchHistoryEnabled={isSearchHistoryEnabled}
+          searchHistory={state.searchHistory}
         />
       </ResultsSection>
     </Layout>

@@ -42,7 +42,11 @@ const Row = styled(Container)({
 });
 
 const GradientBackground = styled(Box)({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
   padding: 5,
+  height: "100%",
   flexDirection: "column",
   border: "2px solid rgba(188, 237, 246, 0.3)",
   borderRadius: 2,
@@ -51,7 +55,6 @@ const GradientBackground = styled(Box)({
 
 export const MovieCard = ({ currentMovie, isDesktopDevice }) => {
   const isCurrentMovie = Object.keys(currentMovie).length !== 0;
-  console.log("movie", currentMovie);
   const [openDialogue, setOpenDialogue] = useState(false);
   return (
     isCurrentMovie && (
