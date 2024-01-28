@@ -9,12 +9,13 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import LoadingSpinner from "./images/Loading.gif";
 
 const Form = styled("form")({
   display: "flex",
-  alignItems: "center",
-  justifyContent: "space-evenly",
   flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
 });
 
 const StyledTextField = styled(TextField)({
@@ -56,15 +57,20 @@ const ResultsSection = styled(Box)({
 export const App = () => {
   const [state, dispatch] = useReducer(appStateReducer, initialState);
   const [searchInput, setSearchInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const isDesktopDevice = useMediaQuery("(min-width:805px)");
   const apiKey = process.env.REACT_APP_OMDB_API_KEY;
 
   const searchMovies = (movieTitle) => {
+    setSearchInput("");
+    setIsLoading(true);
     fetch(`http://www.omdbapi.com/?t=${movieTitle}&apiKey=${apiKey}`)
       .then((response) => response.json())
       .then((data) => {
-        dispatch({ type: ActionTypes.ADD_MOVIE, payload: data });
-        setSearchInput("");
+        setIsLoading(false);
+        if (data.Response) {
+          dispatch({ type: ActionTypes.ADD_MOVIE, payload: data });
+        }
       });
   };
 
@@ -92,6 +98,13 @@ export const App = () => {
             onChange={(event) => setSearchInput(event.target.value)}
             value={searchInput}
           />
+          {isLoading && (
+            <img
+              src={LoadingSpinner}
+              style={{ height: 75, width: 75, margin: 4 }}
+              alt="Loading Spinner"
+            />
+          )}
         </Form>
       </Container>
       <ResultsSection

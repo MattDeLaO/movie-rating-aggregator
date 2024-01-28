@@ -27,6 +27,7 @@ const BgGradientOverlay = styled(Box)({
   textAlign: "center",
   color: "white",
   paddingTop: 4,
+  paddingBottom: 8,
 });
 
 export const Layout = ({ children }) => (
