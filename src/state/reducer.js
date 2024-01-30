@@ -15,7 +15,7 @@ export const determineOverallAverage = (ratings) => {
 
   ratings.map((rating) => ratingValues.push(rating.Value));
 
-  ratingValues.map((value) => {
+  ratingValues.forEach((value) => {
     if (value.includes("/")) {
       const splitValues = value.split("/");
       const percentage = (splitValues[0] / splitValues[1]) * 100;
