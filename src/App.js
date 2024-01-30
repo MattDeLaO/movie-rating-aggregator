@@ -107,6 +107,7 @@ export const App = () => {
         }
       })
       .catch((e) => {
+        setIsLoading(false);
         console.log(e.message);
       });
   };
@@ -136,13 +137,6 @@ export const App = () => {
             onChange={(event) => setSearchInput(event.target.value)}
             value={searchInput}
           />
-          {isLoading && (
-            <img
-              src={LoadingSpinner}
-              style={{ height: 75, width: 75, margin: 4 }}
-              alt="Loading Spinner"
-            />
-          )}
           <Box
             display={"flex"}
             flexDirection={"row"}
@@ -158,6 +152,13 @@ export const App = () => {
               onChange={() => setSearchHistoryEnabled(!isSearchHistoryEnabled)}
             />
           </Box>
+          {isLoading && (
+            <img
+              src={LoadingSpinner}
+              style={{ height: 75, width: 75, margin: 4 }}
+              alt="Loading Spinner"
+            />
+          )}
         </Form>
       </Container>
       <ResultsSection
