@@ -120,8 +120,9 @@ export const App = () => {
       <Container>
         <Typography variant="h2">Worth the Watch?</Typography>
         <Typography variant="body2">
-          A simple app designed to give you the average rating from IMDb,
-          RottenTomatoes, and (when available) Metacritic.
+          Type in a movie to get it's average - compiled by combining IMDb,
+          Metacritic, and Rotten Tomatoes scores. Select your result to see the
+          breakdown.
         </Typography>
         <Form onSubmit={handleSubmit}>
           <StyledTextField

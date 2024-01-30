@@ -23,6 +23,7 @@ const BgGradientOverlay = styled(Box)({
     "linear-gradient(#0b010e, rgba(11,1,14,0.7), rgba(14,0,94,0.05))",
   display: "flex",
   flexDirection: "column",
+  justifyContent: "center",
   alignItems: "center",
   textAlign: "center",
   color: "white",
