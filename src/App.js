@@ -105,6 +105,9 @@ export const App = () => {
         if (data.Response) {
           dispatch({ type: ActionTypes.ADD_MOVIE, payload: data });
         }
+      })
+      .catch((e) => {
+        console.log(e.message);
       });
   };
 
