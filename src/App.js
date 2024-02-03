@@ -89,27 +89,32 @@ const ResultsSection = styled(Box)({
 
 export const App = () => {
   const [state, dispatch] = useReducer(appStateReducer, initialState);
-  const [isSearchHistoryEnabled, setSearchHistoryEnabled] = useState(true);
   const [searchInput, setSearchInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const isDesktopDevice = useMediaQuery("(min-width:805px)");
   const apiKey = process.env.REACT_APP_OMDB_API_KEY;
 
+  console.log("rendered with state", state);
+
   const searchMovies = (movieTitle) => {
     setSearchInput("");
-    setIsLoading(true);
+    dispatch({ type: ActionTypes.LOADING, payload: true });
     fetch(`http://www.omdbapi.com/?t=${movieTitle}&apiKey=${apiKey}`)
       .then((response) => response.json())
       .then((data) => {
-        setIsLoading(false);
-        if (data.Response) {
+        dispatch({ type: ActionTypes.LOADING, payload: false });
+        if (data.Error) {
+          dispatch({ type: ActionTypes.SEARCH_ERROR, payload: true });
+        } else {
           dispatch({ type: ActionTypes.ADD_MOVIE, payload: data });
         }
       })
       .catch((e) => {
-        setIsLoading(false);
+        dispatch({ type: ActionTypes.LOADING, payload: false });
         console.log(e.message);
       });
+  };
+  const handleOnChange = (input) => {
+    setSearchInput(input);
   };
 
   const handleSubmit = (e) => {
@@ -134,7 +139,7 @@ export const App = () => {
             label="Search Movies"
             variant="outlined"
             margin="normal"
-            onChange={(event) => setSearchInput(event.target.value)}
+            onChange={(event) => handleOnChange(event.target.value)}
             value={searchInput}
           />
           <Box
@@ -144,15 +149,17 @@ export const App = () => {
             justifyContent={"center"}
             margin={3}
           >
-            <Typography variant="h5" fontWeight="bold" mr={1}>
+            <Typography variant="h6" fontWeight="bold" mr={1}>
               Search History
             </Typography>
             <HistorySwitch
-              checked={isSearchHistoryEnabled}
-              onChange={() => setSearchHistoryEnabled(!isSearchHistoryEnabled)}
+              checked={state.isSearchHistoryEnabled}
+              onChange={() =>
+                dispatch({ type: ActionTypes.TOGGLE_SEARCH_HISTORY })
+              }
             />
           </Box>
-          {isLoading && (
+          {state.isLoading && (
             <img
               src={LoadingSpinner}
               style={{ height: 75, width: 75, margin: 4 }}
@@ -167,11 +174,12 @@ export const App = () => {
         <MovieCard
           currentMovie={state.currentMovie}
           isDesktopDevice={isDesktopDevice}
+          isSearchError={state.searchError}
         />
         <SearchHistory
           dispatch={dispatch}
           isDesktopDevice={isDesktopDevice}
-          isSearchHistoryEnabled={isSearchHistoryEnabled}
+          isSearchHistoryEnabled={state.isSearchHistoryEnabled}
           searchHistory={state.searchHistory}
         />
       </ResultsSection>

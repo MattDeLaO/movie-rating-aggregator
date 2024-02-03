@@ -53,11 +53,18 @@ const GradientBackground = styled(Box)({
   backgroundImage: "linear-gradient(#0b010e, rgba(14, 0, 94, 1))",
 });
 
-export const MovieCard = ({ currentMovie, isDesktopDevice }) => {
-  const isCurrentMovie = Object.keys(currentMovie).length !== 0;
+export const MovieCard = ({ currentMovie, isDesktopDevice, isSearchError }) => {
+  const shouldRenderMovieCard =
+    !currentMovie.Error && Object.keys(currentMovie).length !== 0;
   const [openDialogue, setOpenDialogue] = useState(false);
-  return (
-    isCurrentMovie && (
+  if (isSearchError) {
+    return (
+      <>
+        <div>MOVIE ERROR!</div>
+      </>
+    );
+  } else if (shouldRenderMovieCard) {
+    return (
       <>
         <GradientBackground>
           <Card sx={{ backgroundColor: "transparent" }}>
@@ -141,6 +148,6 @@ export const MovieCard = ({ currentMovie, isDesktopDevice }) => {
           </DialogContent>
         </Dialog>
       </>
-    )
-  );
+    );
+  }
 };
