@@ -1,17 +1,22 @@
 import { FiPlus, FiMinus } from "react-icons/fi";
 import { ActionTypes } from "../state/reducer";
 import {
+  Avatar,
   Box,
-  ImageList,
-  ImageListItem,
-  ImageListItemBar,
-  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  ListItemAvatar,
+  ListItemSecondaryAction,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { StyledPercentage } from "./StyledPercentage";
 
 const SearchHistorySection = styled(Box)({
   borderRadius: 2,
-  maxHeight: 800,
+  width: 345,
+  height: 345,
   margin: 8,
   overflow: "scroll",
   background: "rgba(0,0,0, .7)",
@@ -19,60 +24,54 @@ const SearchHistorySection = styled(Box)({
 
 export const SearchHistory = ({
   dispatch,
-  isDesktopDevice,
   isSearchHistoryEnabled,
   searchHistory,
 }) => {
   const isSearchHistory = Object.keys(searchHistory).length !== 0;
+  const shouldRenderSearchHistory = isSearchHistory && isSearchHistoryEnabled;
+
   return (
-    isSearchHistory && (
+    shouldRenderSearchHistory && (
       <SearchHistorySection>
-        {isSearchHistoryEnabled && (
-          <ImageList maxWidth={500} maxHeight={isDesktopDevice ? 700 : 450}>
-            {searchHistory.map((movie) => (
-              <ImageListItem key={movie.Poster}>
-                <img
-                  srcSet={`${movie.Poster}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                  src={`${movie.Poster}?w=248&fit=crop&auto=format`}
-                  alt={movie.Title}
-                  loading="lazy"
-                />
-                <ImageListItemBar
-                  subtitle={movie.Title}
-                  actionIcon={
-                    <div style={{ display: "flex", flexDirection: "row" }}>
-                      <IconButton
-                        sx={{ color: "#ff0400" }}
-                        aria-label={`info about ${movie.Title}`}
-                        onClick={() =>
-                          dispatch({
-                            type: ActionTypes.REMOVE_MOVIE,
-                            payload: movie,
-                          })
-                        }
-                      >
-                        <FiMinus />
-                      </IconButton>
-                      <IconButton
-                        sx={{ color: "#00ff1a" }}
-                        aria-label={`info about ${movie.Title}`}
-                        onClick={() =>
-                          dispatch({
-                            type: ActionTypes.REPLACE_CURRENT_MOVIE,
-                            payload: movie,
-                          })
-                        }
-                      >
-                        <FiPlus />
-                      </IconButton>
-                    </div>
+        <List>
+          {searchHistory.map((movie) => (
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar alt={movie.Title} src={movie.Poster} />
+              </ListItemAvatar>
+              <ListItemText sx={{ fontWeight: "bold" }}>
+                {movie.Title}
+                <StyledPercentage overallRating={movie.averageRating} small />
+              </ListItemText>
+              <ListItemSecondaryAction
+                sx={{ display: "flex", flexDirection: "row" }}
+              >
+                <ListItemButton
+                  sx={{ color: "#00ff1a" }}
+                  onClick={() =>
+                    dispatch({
+                      type: ActionTypes.REPLACE_CURRENT_MOVIE,
+                      payload: movie,
+                    })
                   }
-                  p={1}
-                />
-              </ImageListItem>
-            ))}
-          </ImageList>
-        )}
+                >
+                  <FiPlus />
+                </ListItemButton>
+                <ListItemButton
+                  sx={{ color: "#ff0400" }}
+                  onClick={() =>
+                    dispatch({
+                      type: ActionTypes.REMOVE_MOVIE,
+                      payload: movie,
+                    })
+                  }
+                >
+                  <FiMinus />
+                </ListItemButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
       </SearchHistorySection>
     )
   );

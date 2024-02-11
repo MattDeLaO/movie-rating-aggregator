@@ -45,8 +45,10 @@ const GradientBackground = styled(Box)({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: 5,
-  height: "100%",
+  paddingTop: 8,
+  padding: "8px 2px 6px 2px",
+  minHeight: 600,
+  width: 355,
   flexDirection: "column",
   border: "2px solid rgba(188, 237, 246, 0.3)",
   borderRadius: 2,
@@ -59,9 +61,9 @@ export const MovieCard = ({ currentMovie, isDesktopDevice, isSearchError }) => {
   const [openDialogue, setOpenDialogue] = useState(false);
   if (isSearchError) {
     return (
-      <>
-        <div>MOVIE ERROR!</div>
-      </>
+      <GradientBackground>
+        <div>No results found</div>
+      </GradientBackground>
     );
   } else if (shouldRenderMovieCard) {
     return (
@@ -75,8 +77,8 @@ export const MovieCard = ({ currentMovie, isDesktopDevice, isSearchError }) => {
                 image={currentMovie.Poster}
                 alt="Movie Poster"
                 sx={{
-                  borderRadius: 2,
-                  width: isDesktopDevice ? 550 : 345,
+                  borderRadius: 1,
+                  width: 352,
                 }}
               />
               <CardContent>

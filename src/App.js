@@ -3,6 +3,7 @@ import { Layout, SearchHistory, MovieCard } from "./components";
 import { appStateReducer, initialState, ActionTypes } from "./state/reducer";
 import {
   Box,
+  CircularProgress,
   Switch,
   TextField,
   Typography,
@@ -10,7 +11,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import LoadingSpinner from "./images/Loading.gif";
 
 const Form = styled("form")({
   display: "flex",
@@ -113,7 +113,11 @@ export const App = () => {
         console.log(e.message);
       });
   };
+
   const handleOnChange = (input) => {
+    if (state.searchError) {
+      dispatch({ type: ActionTypes.SEARCH_ERROR, payload: false });
+    }
     setSearchInput(input);
   };
 
@@ -129,7 +133,7 @@ export const App = () => {
       <Container>
         <Typography variant="h2">Worth the Watch?</Typography>
         <Typography variant="body2">
-          Type in a movie to get it's average - compiled by combining IMDb,
+          Type in a movie to get its average - compiled by combining IMDb,
           Metacritic, and Rotten Tomatoes scores. Select your result to see the
           breakdown.
         </Typography>
@@ -159,13 +163,7 @@ export const App = () => {
               }
             />
           </Box>
-          {state.isLoading && (
-            <img
-              src={LoadingSpinner}
-              style={{ height: 75, width: 75, margin: 4 }}
-              alt="Loading Spinner"
-            />
-          )}
+          {state.isLoading && <CircularProgress />}
         </Form>
       </Container>
       <ResultsSection
@@ -175,6 +173,7 @@ export const App = () => {
           currentMovie={state.currentMovie}
           isDesktopDevice={isDesktopDevice}
           isSearchError={state.searchError}
+          searchInput={searchInput}
         />
         <SearchHistory
           dispatch={dispatch}

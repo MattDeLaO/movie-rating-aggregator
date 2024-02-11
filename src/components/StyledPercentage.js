@@ -1,9 +1,9 @@
 import { Typography } from "@mui/material";
 
-export const StyledPercentage = ({ overallRating }) => {
+export const StyledPercentage = ({ overallRating, small }) => {
   return (
     <Typography
-      variant="h2"
+      variant={small ? "h6" : "h2"}
       sx={{
         color:
           overallRating >= 90
