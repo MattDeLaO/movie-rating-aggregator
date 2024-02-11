@@ -1,10 +1,10 @@
 export const ActionTypes = {
-  ADD_MOVIE: "ADD_MOVIE",
-  REPLACE_CURRENT_MOVIE: "REPLACE_CURRENT_MOVIE",
-  REMOVE_MOVIE: "REMOVE_MOVIE",
-  TOGGLE_SEARCH_HISTORY: "TOGGLE_SEARCH_HISTORY",
-  LOADING: "LOADING",
-  SEARCH_ERROR: "SEARCH_ERROR",
+  ADD_MOVIE: 'ADD_MOVIE',
+  REPLACE_CURRENT_MOVIE: 'REPLACE_CURRENT_MOVIE',
+  REMOVE_MOVIE: 'REMOVE_MOVIE',
+  TOGGLE_SEARCH_HISTORY: 'TOGGLE_SEARCH_HISTORY',
+  LOADING: 'LOADING',
+  SEARCH_ERROR: 'SEARCH_ERROR',
 };
 
 export const initialState = {
@@ -15,18 +15,18 @@ export const initialState = {
   searchError: false,
 };
 
-export const determineOverallAverage = (ratings) => {
+export const determineOverallAverage = ratings => {
   const ratingValues = [];
   const convertedRatings = [];
 
-  ratings.map((rating) => ratingValues.push(rating.Value));
+  ratings.map(rating => ratingValues.push(rating.Value));
 
-  ratingValues.forEach((value) => {
-    if (value.includes("/")) {
-      const splitValues = value.split("/");
+  ratingValues.forEach(value => {
+    if (value.includes('/')) {
+      const splitValues = value.split('/');
       const percentage = (splitValues[0] / splitValues[1]) * 100;
       convertedRatings.push(percentage);
-    } else if (value.includes("%")) {
+    } else if (value.includes('%')) {
       const valueWithoutPercent = parseInt(
         value.substring(0, value.length - 1)
       );
@@ -41,7 +41,7 @@ export const determineOverallAverage = (ratings) => {
 
 const shouldAddSubmissionToSearchHistory = (state, movie) => {
   let isDuplicate = false;
-  state.searchHistory.forEach((entry) => {
+  state.searchHistory.forEach(entry => {
     if (entry.imdbID === movie.imdbID) {
       isDuplicate = true;
     }
@@ -75,9 +75,7 @@ export const appStateReducer = (state, action) => {
       return {
         ...state,
         searchHistory: [
-          ...state.searchHistory.filter(
-            (movie) => movie.Title !== payload.Title
-          ),
+          ...state.searchHistory.filter(movie => movie.Title !== payload.Title),
         ],
       };
     case ActionTypes.TOGGLE_SEARCH_HISTORY:
