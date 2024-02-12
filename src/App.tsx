@@ -101,7 +101,7 @@ export const App: React.FC = (): JSX.Element => {
   const searchMovies = (movieTitle: string) => {
     setSearchInput('');
     dispatch({ type: ACTION_TYPE.LOADING, payload: true });
-    fetch(`http://www.omdbapi.com/?t=${movieTitle}&apiKey=${apiKey}`)
+    fetch(`https://www.omdbapi.com/?t=${movieTitle}&apiKey=${apiKey}`)
       .then(response => response.json())
       .then(data => {
         dispatch({ type: ACTION_TYPE.LOADING, payload: false });
