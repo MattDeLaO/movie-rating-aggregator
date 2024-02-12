@@ -1,6 +1,14 @@
 import { Typography } from '@mui/material';
 
-export const StyledPercentage = ({ overallRating, small }) => {
+type StyledPercentageProps = {
+  overallRating: number;
+  small?: boolean;
+};
+
+export const StyledPercentage = ({
+  overallRating,
+  small,
+}: StyledPercentageProps) => {
   return (
     <Typography
       variant={small ? 'h6' : 'h2'}

@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import RottenTomatoes from '../images/RottenTomatoes.png';
-import IMDb from '../images/IMDb.png';
-import Metacritic from '../images/Metacritic.png';
 import {
   Box,
   Card,
@@ -18,19 +15,16 @@ import {
 import { styled } from '@mui/material/styles';
 import { StyledPercentage } from './StyledPercentage';
 import { IoClose, IoTrophySharp } from 'react-icons/io5';
+import { Movie } from 'types/global';
 
-const determineSourcePicture = source => {
-  switch (source) {
-    case 'Internet Movie Database':
-      return IMDb;
-    case 'Rotten Tomatoes':
-      return RottenTomatoes;
-    case 'Metacritic':
-      return Metacritic;
-    default:
-      return;
-  }
+type MovieCardProps = {
+  currentMovie: Movie;
+  isSearchError: boolean;
 };
+
+const RottenTomatoes = require('../images/RottenTomatoes.png');
+const IMDb = require('../images/IMDb.png');
+const Metacritic = require('../images/Metacritic.png');
 
 const Row = styled(Container)({
   maxWidth: 475,
@@ -55,7 +49,20 @@ const GradientBackground = styled(Box)({
   backgroundImage: 'linear-gradient(#0b010e, rgba(14, 0, 94, 1))',
 });
 
-export const MovieCard = ({ currentMovie, isDesktopDevice, isSearchError }) => {
+const determineSourcePicture = (source: string) => {
+  switch (source) {
+    case 'Internet Movie Database':
+      return IMDb;
+    case 'Rotten Tomatoes':
+      return RottenTomatoes;
+    case 'Metacritic':
+      return Metacritic;
+    default:
+      return;
+  }
+};
+
+export const MovieCard = ({ currentMovie, isSearchError }: MovieCardProps) => {
   const shouldRenderMovieCard =
     !currentMovie.Error && Object.keys(currentMovie).length !== 0;
   const [openDialogue, setOpenDialogue] = useState(false);

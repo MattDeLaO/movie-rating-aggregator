@@ -1,6 +1,8 @@
 import { useState, useReducer } from 'react';
-import { Layout, SearchHistory, MovieCard } from './components';
-import { appStateReducer, initialState, ActionTypes } from './state/reducer';
+import { Layout } from './components/Layout';
+import { SearchHistory } from './components/SearchHistory';
+import { MovieCard } from './components/MovieCard';
+import { appStateReducer, initialState } from './state/reducer';
 import {
   Box,
   CircularProgress,
@@ -11,6 +13,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { ACTION_TYPE } from 'types/global';
 
 const Form = styled('form')({
   display: 'flex',
@@ -87,7 +90,7 @@ const ResultsSection = styled(Box)({
   marginTop: 4,
 });
 
-export const App = () => {
+export const App: React.FC = (): JSX.Element => {
   const [state, dispatch] = useReducer(appStateReducer, initialState);
   const [searchInput, setSearchInput] = useState('');
   const isDesktopDevice = useMediaQuery('(min-width:805px)');
@@ -95,33 +98,33 @@ export const App = () => {
 
   console.log('rendered with state', state);
 
-  const searchMovies = movieTitle => {
+  const searchMovies = (movieTitle: string) => {
     setSearchInput('');
-    dispatch({ type: ActionTypes.LOADING, payload: true });
+    dispatch({ type: ACTION_TYPE.LOADING, payload: true });
     fetch(`http://www.omdbapi.com/?t=${movieTitle}&apiKey=${apiKey}`)
       .then(response => response.json())
       .then(data => {
-        dispatch({ type: ActionTypes.LOADING, payload: false });
+        dispatch({ type: ACTION_TYPE.LOADING, payload: false });
         if (data.Error) {
-          dispatch({ type: ActionTypes.SEARCH_ERROR, payload: true });
+          dispatch({ type: ACTION_TYPE.SEARCH_ERROR, payload: true });
         } else {
-          dispatch({ type: ActionTypes.ADD_MOVIE, payload: data });
+          dispatch({ type: ACTION_TYPE.ADD_MOVIE, payload: data });
         }
       })
       .catch(e => {
-        dispatch({ type: ActionTypes.LOADING, payload: false });
+        dispatch({ type: ACTION_TYPE.LOADING, payload: false });
         console.log(e.message);
       });
   };
 
-  const handleOnChange = input => {
+  const handleOnChange = (input: string) => {
     if (state.searchError) {
-      dispatch({ type: ActionTypes.SEARCH_ERROR, payload: false });
+      dispatch({ type: ACTION_TYPE.SEARCH_ERROR, payload: false });
     }
     setSearchInput(input);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     if (searchInput) {
       searchMovies(searchInput);
@@ -158,7 +161,7 @@ export const App = () => {
             <HistorySwitch
               checked={state.isSearchHistoryEnabled}
               onChange={() =>
-                dispatch({ type: ActionTypes.TOGGLE_SEARCH_HISTORY })
+                dispatch({ type: ACTION_TYPE.TOGGLE_SEARCH_HISTORY })
               }
             />
           </Box>
@@ -169,13 +172,10 @@ export const App = () => {
         sx={{ flexDirection: isDesktopDevice ? 'row' : 'column' }}>
         <MovieCard
           currentMovie={state.currentMovie}
-          isDesktopDevice={isDesktopDevice}
           isSearchError={state.searchError}
-          searchInput={searchInput}
         />
         <SearchHistory
           dispatch={dispatch}
-          isDesktopDevice={isDesktopDevice}
           isSearchHistoryEnabled={state.isSearchHistoryEnabled}
           searchHistory={state.searchHistory}
         />

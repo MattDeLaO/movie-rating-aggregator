@@ -31,7 +31,7 @@ const BgGradientOverlay = styled(Box)({
   paddingBottom: 8,
 });
 
-export const Layout = ({ children }) => (
+export const Layout = ({ children }: any) => (
   <BgImage>
     <BgGradientOverlay>{children}</BgGradientOverlay>
   </BgImage>
