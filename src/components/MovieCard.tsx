@@ -15,16 +15,15 @@ import {
 import { styled } from '@mui/material/styles';
 import { StyledPercentage } from './StyledPercentage';
 import { IoClose, IoTrophySharp } from 'react-icons/io5';
+import RottenTomatoes from 'images/RottenTomatoes.png';
+import IMDb from 'images/IMDb.png';
+import Metacritic from 'images/Metacritic.png';
 import { Movie } from 'types/global';
 
 type MovieCardProps = {
   currentMovie: Movie;
   isSearchError: boolean;
 };
-
-const RottenTomatoes = require('../images/RottenTomatoes.png');
-const IMDb = require('../images/IMDb.png');
-const Metacritic = require('../images/Metacritic.png');
 
 const Row = styled(Container)({
   maxWidth: 475,
