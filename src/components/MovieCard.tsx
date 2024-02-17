@@ -159,7 +159,9 @@ export const MovieCard = ({ currentMovie, isSearchError }: MovieCardProps) => {
                     margin: '5%',
                   }}
                 />
-                <Typography fontWeight="bold">{currentMovie.Awards}</Typography>
+                <Typography fontWeight="bold" fontFamily="Urbanist">
+                  {currentMovie.Awards}
+                </Typography>
               </Row>
             )}
           </DialogContent>
