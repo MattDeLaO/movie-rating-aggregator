@@ -88,7 +88,9 @@ export const MovieCard = ({ currentMovie, isSearchError }: MovieCardProps) => {
                 }}
               />
               <CardContent>
-                <Typography variant="h4" color={'#FFFF'}>
+                <Typography
+                  variant="h4"
+                  sx={{ color: '#FFFF', fontFamily: 'Bowlby One SC' }}>
                   Average Rating:
                 </Typography>
                 <StyledPercentage overallRating={currentMovie.averageRating} />
@@ -97,7 +99,13 @@ export const MovieCard = ({ currentMovie, isSearchError }: MovieCardProps) => {
           </Card>
         </GradientBackground>
         <Dialog open={openDialogue} onClose={() => setOpenDialogue(false)}>
-          <DialogTitle bgcolor={'#0b010e'} color={'#FFFF'} fontWeight="bold">
+          <DialogTitle
+            sx={{
+              backgroundColor: '#0b010e',
+              fontFamily: 'Bowlby One SC',
+              fontWeight: 'bold',
+              color: '#FFFF',
+            }}>
             {`${currentMovie.Title} (${currentMovie.Year})`}
           </DialogTitle>
           <IconButton
@@ -112,14 +120,17 @@ export const MovieCard = ({ currentMovie, isSearchError }: MovieCardProps) => {
             <IoClose />
           </IconButton>
           <DialogContent
-            style={{
+            sx={{
               backgroundImage: 'linear-gradient(#0b010e, rgba(14, 0, 94, 1))',
-              color: 'white',
+              fontFamily: 'Urbanist',
+              color: '#FFFF',
             }}>
-            <Typography variant="h6" mb={2}>
+            <Typography variant="h6" mb={2} sx={{ fontFamily: 'Urbanist' }}>
               {currentMovie.Genre}
             </Typography>
-            <Typography mb={4}>{currentMovie.Plot}</Typography>
+            <Typography mb={4} sx={{ fontFamily: 'Urbanist' }}>
+              {currentMovie.Plot}
+            </Typography>
             {currentMovie.Ratings?.map(rating => (
               <Row>
                 <div style={{ width: 50, height: 50 }}>

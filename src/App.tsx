@@ -57,6 +57,7 @@ const HistorySwitch = styled(Switch)({
 const StyledTextField = styled(TextField)({
   '& label': {
     color: 'rgba(188, 237, 246, 1)',
+    fontFamily: 'Urbanist',
   },
   '& label.Mui-focused': {
     color: 'rgba(188, 237, 246, 1)',
@@ -96,8 +97,6 @@ export const App: React.FC = (): JSX.Element => {
   const isDesktopDevice = useMediaQuery('(min-width:805px)');
   const apiKey = process.env.REACT_APP_OMDB_API_KEY;
 
-  console.log('rendered with state', state);
-
   const searchMovies = (movieTitle: string) => {
     setSearchInput('');
     dispatch({ type: ACTION_TYPE.LOADING, payload: true });
@@ -134,8 +133,12 @@ export const App: React.FC = (): JSX.Element => {
   return (
     <Layout>
       <Container>
-        <Typography variant="h2">Worth the Watch?</Typography>
-        <Typography variant="body2">
+        <Typography variant="h2" sx={{ fontFamily: 'Honk', letterSpacing: 2 }}>
+          Worth the Watch?
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{ fontFamily: 'Urbanist', letterSpacing: 1 }}>
           Type in a movie to get its average - compiled by combining IMDb,
           Metacritic, and Rotten Tomatoes scores. Select your result to see the
           breakdown.

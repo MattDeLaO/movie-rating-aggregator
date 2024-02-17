@@ -25,6 +25,7 @@ export const StyledPercentage = ({
             : overallRating >= 50
             ? '#FAD000'
             : '#E90C00',
+        fontFamily: 'Bowlby One SC',
       }}>
       {`${overallRating}%`}
     </Typography>
