@@ -1,4 +1,4 @@
-import {ACTION_TYPE, Movie, Action, Rating} from '../types/global';
+import { ACTION_TYPE, Movie, Action, Rating } from '../types/global';
 
 export type AppState = {
   currentMovie: Movie;
@@ -6,7 +6,8 @@ export type AppState = {
   isSearchHistoryEnabled: boolean;
   isLoading: boolean;
   searchError: boolean;
-}
+  streamingAvailability: any;
+};
 
 export const initialState = {
   currentMovie: {},
@@ -14,10 +15,11 @@ export const initialState = {
   isSearchHistoryEnabled: true,
   isLoading: false,
   searchError: false,
+  streamingAvailability: [],
 };
 
 export const determineOverallAverage = (ratings: Rating[]): number => {
-  const ratingValues:any[] = [];
+  const ratingValues: any[] = [];
   const convertedRatings: number[] = [];
 
   ratings.map(rating => ratingValues.push(rating.Value));
@@ -53,49 +55,57 @@ const shouldAddSubmissionToSearchHistory = (state: AppState, movie: Movie) => {
 
 export const appStateReducer = (state: AppState, action: Action) => {
   const { type, payload } = action;
- 
-    switch (type) {
-      case ACTION_TYPE.ADD_MOVIE: {
-        if (payload.Ratings) {
-          payload.averageRating = determineOverallAverage(payload.Ratings);
-        }
-        const movie = { ...payload };
-        return {
-          ...state,
-          currentMovie: movie,
-          searchHistory: shouldAddSubmissionToSearchHistory(state, movie)
-            ? [movie, ...state.searchHistory]
-            : [...state.searchHistory],
-        };
+
+  switch (type) {
+    case ACTION_TYPE.ADD_MOVIE: {
+      if (payload.Ratings) {
+        payload.averageRating = determineOverallAverage(payload.Ratings);
       }
-      case ACTION_TYPE.REPLACE_CURRENT_MOVIE:
-        return {
-          ...state,
-          currentMovie: payload,
-        };
-      case ACTION_TYPE.REMOVE_MOVIE:
-        return {
-          ...state,
-          searchHistory: [
-            ...state.searchHistory.filter((movie: Movie) => movie.Title !== payload.Title),
-          ],
-        };
-      case ACTION_TYPE.TOGGLE_SEARCH_HISTORY:
-        return {
-          ...state,
-          isSearchHistoryEnabled: !state.isSearchHistoryEnabled,
-        };
-      case ACTION_TYPE.LOADING:
-        return {
-          ...state,
-          isLoading: payload,
-        };
-      case ACTION_TYPE.SEARCH_ERROR:
-        return {
-          ...state,
-          searchError: payload,
-        };
-      default:
-        return state;
-    } 
+      const movie = { ...payload };
+      return {
+        ...state,
+        currentMovie: movie,
+        searchHistory: shouldAddSubmissionToSearchHistory(state, movie)
+          ? [movie, ...state.searchHistory]
+          : [...state.searchHistory],
+      };
+    }
+    case ACTION_TYPE.ADD_STREAMING_AVAILABILITY: {
+      return {
+        ...state,
+        streamingAvaiability: payload,
+      };
+    }
+    case ACTION_TYPE.REPLACE_CURRENT_MOVIE:
+      return {
+        ...state,
+        currentMovie: payload,
+      };
+    case ACTION_TYPE.REMOVE_MOVIE:
+      return {
+        ...state,
+        searchHistory: [
+          ...state.searchHistory.filter(
+            (movie: Movie) => movie.Title !== payload.Title
+          ),
+        ],
+      };
+    case ACTION_TYPE.TOGGLE_SEARCH_HISTORY:
+      return {
+        ...state,
+        isSearchHistoryEnabled: !state.isSearchHistoryEnabled,
+      };
+    case ACTION_TYPE.LOADING:
+      return {
+        ...state,
+        isLoading: payload,
+      };
+    case ACTION_TYPE.SEARCH_ERROR:
+      return {
+        ...state,
+        searchError: payload,
+      };
+    default:
+      return state;
+  }
 };

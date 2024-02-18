@@ -18,6 +18,7 @@ type SearchHistoryProps = {
   isSearchHistoryEnabled: boolean;
   searchHistory: Movie[];
 };
+
 const SearchHistorySection = styled(Box)({
   borderRadius: 2,
   width: 345,

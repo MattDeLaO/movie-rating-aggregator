@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import {
   Box,
+  Button,
   Card,
   CardActionArea,
   CardContent,
   CardMedia,
+  Chip,
   Container,
   Dialog,
   DialogContent,
   DialogTitle,
   IconButton,
   Typography,
+  Tabs,
+  Tab,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { StyledPercentage } from './StyledPercentage';
@@ -19,10 +23,12 @@ import RottenTomatoes from 'images/RottenTomatoes.png';
 import IMDb from 'images/IMDb.png';
 import Metacritic from 'images/Metacritic.png';
 import { Movie } from 'types/global';
+import { getStreamingAvailability } from 'services/getStreamingAvailability.service';
 
 type MovieCardProps = {
   currentMovie: Movie;
   isSearchError: boolean;
+  dispatch: any;
 };
 
 const Row = styled(Container)({
@@ -31,15 +37,13 @@ const Row = styled(Container)({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  marginTop: 8,
 });
 
 const GradientBackground = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  paddingTop: 8,
-  padding: '8px 2px 6px 2px',
+  paddingTop: 4,
   minHeight: 600,
   width: 355,
   flexDirection: 'column',
@@ -61,7 +65,11 @@ const determineSourcePicture = (source: string) => {
   }
 };
 
-export const MovieCard = ({ currentMovie, isSearchError }: MovieCardProps) => {
+export const MovieCard = ({
+  currentMovie,
+  isSearchError,
+  dispatch,
+}: MovieCardProps) => {
   const shouldRenderMovieCard =
     !currentMovie.Error && Object.keys(currentMovie).length !== 0;
   const [openDialogue, setOpenDialogue] = useState(false);
@@ -77,6 +85,11 @@ export const MovieCard = ({ currentMovie, isSearchError }: MovieCardProps) => {
         <GradientBackground>
           <Card sx={{ backgroundColor: 'transparent' }}>
             <CardActionArea onClick={() => setOpenDialogue(true)}>
+              <Typography
+                variant="h6"
+                sx={{ color: '#FFFF', fontFamily: 'Bowlby One SC' }}>
+                {`${currentMovie.Title} (${currentMovie.Year})`}
+              </Typography>
               <CardMedia
                 component="img"
                 height="auto"
@@ -88,6 +101,9 @@ export const MovieCard = ({ currentMovie, isSearchError }: MovieCardProps) => {
                 }}
               />
               <CardContent>
+                <Typography sx={{ color: '#FFFF', fontFamily: 'Urbanist' }}>
+                  More Details
+                </Typography>
                 <Typography
                   variant="h4"
                   sx={{ color: '#FFFF', fontFamily: 'Bowlby One SC' }}>
@@ -126,13 +142,24 @@ export const MovieCard = ({ currentMovie, isSearchError }: MovieCardProps) => {
               color: '#FFFF',
             }}>
             <Typography variant="h6" mb={2} sx={{ fontFamily: 'Urbanist' }}>
-              {currentMovie.Genre}
+              {currentMovie.Genre &&
+                currentMovie.Genre.split(',').map(genre => (
+                  <Chip
+                    label={genre}
+                    variant="outlined"
+                    sx={{
+                      color: 'white',
+                      fontFamily: 'Urbanist',
+                      marginRight: 1,
+                    }}
+                  />
+                ))}
             </Typography>
             <Typography mb={4} sx={{ fontFamily: 'Urbanist' }}>
               {currentMovie.Plot}
             </Typography>
             {currentMovie.Ratings?.map(rating => (
-              <Row>
+              <Row key={rating.Source}>
                 <div style={{ width: 50, height: 50 }}>
                   <img
                     src={determineSourcePicture(rating.Source)}
@@ -164,6 +191,16 @@ export const MovieCard = ({ currentMovie, isSearchError }: MovieCardProps) => {
                 </Typography>
               </Row>
             )}
+            <Row sx={{ justifyContent: 'center' }}>
+              <Button
+                variant="outlined"
+                sx={{ color: '#FFFF', fontFamily: 'Bowlby One SC' }}
+                onClick={() =>
+                  getStreamingAvailability(dispatch, currentMovie.imdbID)
+                }>
+                Check Streaming Availability
+              </Button>
+            </Row>
           </DialogContent>
         </Dialog>
       </>

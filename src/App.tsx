@@ -14,6 +14,8 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { ACTION_TYPE } from 'types/global';
+//@ts-ignore
+import { getMedia } from './services/getMedia.service';
 
 const Form = styled('form')({
   display: 'flex',
@@ -26,6 +28,7 @@ const HistorySwitch = styled(Switch)({
   width: 42,
   height: 26,
   padding: 0,
+  fontFamily: 'Urbanist',
   '& .MuiSwitch-switchBase': {
     padding: 0,
     margin: 2,
@@ -95,30 +98,11 @@ export const App: React.FC = (): JSX.Element => {
   const [state, dispatch] = useReducer(appStateReducer, initialState);
   const [searchInput, setSearchInput] = useState('');
   const isDesktopDevice = useMediaQuery('(min-width:805px)');
-  const apiKey = process.env.REACT_APP_OMDB_API_KEY;
-
-  const searchMovies = (movieTitle: string) => {
-    setSearchInput('');
-    dispatch({ type: ACTION_TYPE.LOADING, payload: true });
-    fetch(`https://www.omdbapi.com/?t=${movieTitle}&apiKey=${apiKey}`)
-      .then(response => response.json())
-      .then(data => {
-        dispatch({ type: ACTION_TYPE.LOADING, payload: false });
-        if (data.Error) {
-          dispatch({ type: ACTION_TYPE.SEARCH_ERROR, payload: true });
-        } else {
-          dispatch({ type: ACTION_TYPE.ADD_MOVIE, payload: data });
-        }
-      })
-      .catch(e => {
-        dispatch({ type: ACTION_TYPE.LOADING, payload: false });
-        console.log(e.message);
-      });
-  };
 
   const handleOnChange = (input: string) => {
     if (state.searchError) {
       dispatch({ type: ACTION_TYPE.SEARCH_ERROR, payload: false });
+      dispatch({ type: ACTION_TYPE.REPLACE_CURRENT_MOVIE, payload: {} });
     }
     setSearchInput(input);
   };
@@ -126,7 +110,8 @@ export const App: React.FC = (): JSX.Element => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (searchInput) {
-      searchMovies(searchInput);
+      getMedia(dispatch, searchInput);
+      setSearchInput('');
     }
   };
 
@@ -139,9 +124,9 @@ export const App: React.FC = (): JSX.Element => {
         <Typography
           variant="body2"
           sx={{ fontFamily: 'Urbanist', letterSpacing: 1 }}>
-          Type in a movie to get its average - compiled by combining IMDb,
-          Metacritic, and Rotten Tomatoes scores. Select your result to see the
-          breakdown.
+          Type in a movie or show to get its average. Averages are compiled by
+          combining IMDb, Metacritic, and Rotten Tomatoes scores. Select your
+          result to see the breakdown.
         </Typography>
         <Form onSubmit={handleSubmit}>
           <StyledTextField
@@ -176,6 +161,7 @@ export const App: React.FC = (): JSX.Element => {
         <MovieCard
           currentMovie={state.currentMovie}
           isSearchError={state.searchError}
+          dispatch={dispatch}
         />
         <SearchHistory
           dispatch={dispatch}
