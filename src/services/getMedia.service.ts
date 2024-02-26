@@ -6,7 +6,7 @@ const apiKey = process.env.REACT_APP_OMDB_API_KEY;
 export const getMedia = async (dispatch: any, movieTitle: string) => {
   const options = {
     method: 'GET',
-    url: `http://www.omdbapi.com`,
+    url: `https://www.omdbapi.com`,
     params: {
       apiKey,
       t: movieTitle,
