@@ -1,26 +1,21 @@
-import axios from 'axios';
 import { ACTION_TYPE } from 'types/global';
 
-const apiKey = process.env.REACT_APP_OMDB_API_KEY;
-
-export const getMedia = async (dispatch: any, movieTitle: string) => {
+export const getMedia = async (dispatch: any, title: string) => {
   const options = {
-    method: 'GET',
-    url: `https://www.omdbapi.com`,
-    params: {
-      apiKey,
-      t: movieTitle,
-    },
+    method: 'POST',
+    body: JSON.stringify({
+      title,
+    }),
   };
   dispatch({ type: ACTION_TYPE.LOADING, payload: true });
   try {
-    const response = await axios.request(options);
-    console.log('getMedia:', response.data);
-    const { data } = response;
-    if (data.Error) {
+    const response = await fetch('/.netlify/functions/getMedia', options).then(
+      res => res.json()
+    );
+    if (response.Error) {
       dispatch({ type: ACTION_TYPE.SEARCH_ERROR, payload: true });
     } else {
-      dispatch({ type: ACTION_TYPE.ADD_MOVIE, payload: data });
+      dispatch({ type: ACTION_TYPE.ADD_MOVIE, payload: response });
     }
     dispatch({ type: ACTION_TYPE.LOADING, payload: false });
   } catch (e: any) {

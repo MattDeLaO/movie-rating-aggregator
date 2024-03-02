@@ -13,8 +13,6 @@ import {
   DialogTitle,
   IconButton,
   Typography,
-  Tabs,
-  Tab,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { StyledPercentage } from './StyledPercentage';
