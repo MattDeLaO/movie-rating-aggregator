@@ -73,6 +73,8 @@ export const App: React.FC = (): JSX.Element => {
             onChange={event => handleOnChange(event.target.value)}
             value={searchInput}
           />
+        </Form>
+        {state.searchHistory.length > 0 && (
           <Box
             display={'flex'}
             flexDirection={'row'}
@@ -89,8 +91,8 @@ export const App: React.FC = (): JSX.Element => {
               }
             />
           </Box>
-          {state.isLoading && <CircularProgress />}
-        </Form>
+        )}
+        {state.isLoading && <CircularProgress />}
       </Container>
       <ResultsSection
         sx={{ flexDirection: isDesktopDevice ? 'row' : 'column' }}>

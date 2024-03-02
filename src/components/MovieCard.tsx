@@ -74,7 +74,7 @@ export const MovieCard = ({
   if (isSearchError) {
     return (
       <GradientBackground>
-        <div>No results found</div>
+        <Typography>No results found</Typography>
       </GradientBackground>
     );
   } else if (shouldRenderMovieCard) {
@@ -83,11 +83,6 @@ export const MovieCard = ({
         <GradientBackground>
           <Card sx={{ backgroundColor: 'transparent' }}>
             <CardActionArea onClick={() => setOpenDialogue(true)}>
-              <Typography
-                variant="h6"
-                sx={{ color: '#FFFF', fontFamily: 'Bowlby One SC' }}>
-                {`${currentMovie.Title} (${currentMovie.Year})`}
-              </Typography>
               <CardMedia
                 component="img"
                 height="auto"
@@ -99,6 +94,11 @@ export const MovieCard = ({
                 }}
               />
               <CardContent>
+                <Typography
+                  variant="h6"
+                  sx={{ color: '#FFFF', fontFamily: 'Bowlby One SC' }}>
+                  {`${currentMovie.Title} (${currentMovie.Year})`}
+                </Typography>
                 <Typography sx={{ color: '#FFFF', fontFamily: 'Urbanist' }}>
                   More Details
                 </Typography>
@@ -143,6 +143,7 @@ export const MovieCard = ({
               {currentMovie.Genre &&
                 currentMovie.Genre.split(',').map(genre => (
                   <Chip
+                    key={genre}
                     label={genre}
                     variant="outlined"
                     sx={{

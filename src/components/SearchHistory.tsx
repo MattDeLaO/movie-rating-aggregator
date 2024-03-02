@@ -41,7 +41,7 @@ export const SearchHistory = ({
       <SearchHistorySection>
         <List>
           {searchHistory.map((movie: Movie) => (
-            <ListItem>
+            <ListItem key={movie.imdbID}>
               <ListItemAvatar>
                 <Avatar alt={movie.Title} src={movie.Poster} />
               </ListItemAvatar>
