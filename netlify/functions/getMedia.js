@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 const apiKey = process.env.REACT_APP_OMDB_API_KEY;
 
-export const handler = async (event, context) => {
+export const handler = async event => {
   const eventBody = JSON.parse(event?.body);
   const url = `https://www.omdbapi.com/?t=${eventBody.title}&apiKey=${apiKey}`;
 
@@ -14,7 +14,7 @@ export const handler = async (event, context) => {
       body: JSON.stringify(data),
     };
   } catch (e) {
-    console.log('NEW_ERROR:', e.message);
+    console.log('REQUEST_ERROR:', e.message);
     return {
       statusCode: 400,
       body: e.stack,

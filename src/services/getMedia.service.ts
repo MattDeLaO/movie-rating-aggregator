@@ -9,13 +9,13 @@ export const getMedia = async (dispatch: any, title: string) => {
   };
   dispatch({ type: ACTION_TYPE.LOADING, payload: true });
   try {
-    const response = await fetch('/.netlify/functions/getMedia', options).then(
-      res => res.json()
+    const data = await fetch('/.netlify/functions/getMedia', options).then(
+      response => response.json()
     );
-    if (response.Error) {
+    if (data?.Error) {
       dispatch({ type: ACTION_TYPE.SEARCH_ERROR, payload: true });
     } else {
-      dispatch({ type: ACTION_TYPE.ADD_MOVIE, payload: response });
+      dispatch({ type: ACTION_TYPE.ADD_MOVIE, payload: data });
     }
     dispatch({ type: ACTION_TYPE.LOADING, payload: false });
   } catch (e: any) {
