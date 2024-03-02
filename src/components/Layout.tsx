@@ -1,4 +1,4 @@
-import Tickets from '../images/TicketsBackground.svg';
+import Tickets from 'images/TicketsBackground.svg';
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 

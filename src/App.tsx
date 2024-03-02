@@ -1,13 +1,13 @@
 import { useState, useReducer } from 'react';
-import { Layout } from './components/Layout';
-import { SearchHistory } from './components/SearchHistory';
-import { MovieCard } from './components/MovieCard';
-import { appStateReducer, initialState } from './state/reducer';
+import { Layout } from 'components/Layout';
+import { SearchHistory } from 'components/SearchHistory';
+import { MovieCard } from 'components/MovieCard';
+import { HistorySwitch } from 'components/HistorySwitch';
+import { TextInputField } from 'components/TextInputField';
+import { appStateReducer, initialState } from 'state/reducer';
 import {
   Box,
   CircularProgress,
-  Switch,
-  TextField,
   Typography,
   Container,
   useMediaQuery,
@@ -15,77 +15,13 @@ import {
 import { styled } from '@mui/material/styles';
 import { ACTION_TYPE } from 'types/global';
 //@ts-ignore
-import { getMedia } from './services/getMedia.service';
+import { getMedia } from 'services/getMedia.service';
 
 const Form = styled('form')({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-});
-
-const HistorySwitch = styled(Switch)({
-  width: 42,
-  height: 26,
-  padding: 0,
-  fontFamily: 'Urbanist',
-  '& .MuiSwitch-switchBase': {
-    padding: 0,
-    margin: 2,
-    transitionDuration: '300ms',
-    '&.Mui-checked': {
-      transform: 'translateX(16px)',
-      color: '#fff',
-      '& + .MuiSwitch-track': {
-        backgroundColor: '#00ff1a',
-        opacity: 1,
-        border: 0,
-      },
-      '&.Mui-disabled + .MuiSwitch-track': {
-        opacity: 0.5,
-      },
-    },
-    '&.Mui-focusVisible .MuiSwitch-thumb': {
-      color: '#33cf4d',
-      border: '6px solid #fff',
-    },
-  },
-  '& .MuiSwitch-track': {
-    borderRadius: 26 / 2,
-    backgroundColor: '#39393D',
-    opacity: 1,
-  },
-});
-
-const StyledTextField = styled(TextField)({
-  '& label': {
-    color: 'rgba(188, 237, 246, 1)',
-    fontFamily: 'Urbanist',
-  },
-  '& label.Mui-focused': {
-    color: 'rgba(188, 237, 246, 1)',
-  },
-  '& .MuiInput-underline:after': {
-    borderBottomColor: 'rgba(14, 0, 94, 1)',
-  },
-  '& .MuiOutlinedInput-root': {
-    '& fieldset': {
-      borderColor: 'rgba(14, 0, 94, 1)',
-      borderWidth: 3,
-    },
-    '&:hover fieldset': {
-      borderColor: '#FFFF',
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: 'rgba(188, 237, 246, 1)',
-    },
-  },
-  input: {
-    color: '#FFFF',
-  },
-  background: 'rgba(14, 0, 94, .6)',
-  borderRadius: 3,
-  width: 300,
 });
 
 const ResultsSection = styled(Box)({
@@ -129,7 +65,7 @@ export const App: React.FC = (): JSX.Element => {
           result to see the breakdown.
         </Typography>
         <Form onSubmit={handleSubmit}>
-          <StyledTextField
+          <TextInputField
             id="outlined-basic"
             label="Search Movies"
             variant="outlined"
