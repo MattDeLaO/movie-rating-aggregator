@@ -1,4 +1,11 @@
-import { ACTION_TYPE } from 'types/global';
+import {
+  addMedia,
+  updateLoading,
+  updateSearchError,
+  //@ts-ignore
+} from 'state/slices/mediaSlice';
+//@ts-ignore
+import { addToSearchHistory } from 'state/slices/searchHistorySlice';
 
 export const getMedia = async (dispatch: any, title: string) => {
   const options = {
@@ -7,20 +14,22 @@ export const getMedia = async (dispatch: any, title: string) => {
       title,
     }),
   };
-  dispatch({ type: ACTION_TYPE.LOADING, payload: true });
+  dispatch(updateLoading(true));
   try {
     const data = await fetch('/.netlify/functions/getMedia', options).then(
       response => response.json()
     );
     if (data?.Error) {
-      dispatch({ type: ACTION_TYPE.SEARCH_ERROR, payload: true });
+      dispatch(updateSearchError(true));
     } else {
-      dispatch({ type: ACTION_TYPE.ADD_MOVIE, payload: data });
+      dispatch(addMedia(data));
+      dispatch(addToSearchHistory(data));
     }
-    dispatch({ type: ACTION_TYPE.LOADING, payload: false });
+    dispatch(updateLoading(false));
   } catch (e: any) {
-    console.log(e.message);
-    dispatch({ type: ACTION_TYPE.LOADING, payload: false });
-    dispatch({ type: ACTION_TYPE.SEARCH_ERROR, payload: true });
+    console.log('getMedia Service Call Error:', e.message);
+    dispatch(updateLoading(false));
+    // TODO: fix this error from updating addToSearchHistory
+    // dispatch(updateSearchError(true));
   }
 };

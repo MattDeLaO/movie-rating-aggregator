@@ -18,7 +18,7 @@ export type Rating = {
   Source: string;
 };
 
-export type Movie = {
+export type Media = {
   Awards: string;
   imdbID: string;
   Title: string;
@@ -29,4 +29,21 @@ export type Movie = {
   Plot: string;
   Genre: string;
   Ratings: Rating[];
+};
+
+export type StreamingService = {
+  service: string;
+  streamingType: string;
+  price: {
+    amount: string;
+  };
+};
+
+export type StreamingObject = {
+  service: string;
+  subscription: boolean;
+  buy?: boolean;
+  rent?: boolean;
+  purchasePrice?: string;
+  rentalPrice?: string;
 };

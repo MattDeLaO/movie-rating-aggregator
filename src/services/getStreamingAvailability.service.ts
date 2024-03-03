@@ -15,7 +15,6 @@ export const getStreamingAvailability = async (
       '/.netlify/functions/getStreamingAvailability',
       options
     ).then(response => response.json());
-    console.log('STREAMING_INFO', data.result.streamingInfo.us);
     dispatch({
       type: ACTION_TYPE.ADD_STREAMING_AVAILABILITY,
       payload: data.result.streamingInfo.us,

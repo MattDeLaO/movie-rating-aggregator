@@ -1,10 +1,9 @@
-import { useState, useReducer } from 'react';
+import { useState } from 'react';
 import { Layout } from 'components/Layout';
 import { SearchHistory } from 'components/SearchHistory';
 import { MovieCard } from 'components/MovieCard';
 import { HistorySwitch } from 'components/HistorySwitch';
 import { TextInputField } from 'components/TextInputField';
-import { appStateReducer, initialState } from 'state/reducer';
 import {
   Box,
   CircularProgress,
@@ -13,9 +12,16 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ACTION_TYPE } from 'types/global';
 //@ts-ignore
 import { getMedia } from 'services/getMedia.service';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  replaceCurrentMedia,
+  updateSearchError,
+  //@ts-ignore
+} from 'state/slices/mediaSlice';
+//@ts-ignore
+import { updateSearchHistoryToggle } from 'state/slices/searchHistorySlice';
 
 const Form = styled('form')({
   display: 'flex',
@@ -31,14 +37,25 @@ const ResultsSection = styled(Box)({
 });
 
 export const App: React.FC = (): JSX.Element => {
-  const [state, dispatch] = useReducer(appStateReducer, initialState);
+  const dispatch = useDispatch();
+  //@ts-ignore
+  const isError = useSelector(state => state.media.isError);
+  //@ts-ignore
+  const searchHistory = useSelector(state => state.searchHistory.history);
+  //@ts-ignore
+  const isSearchLoading = useSelector(state => state.media.isLoading);
+  const isSearchHistoryEnabled = useSelector(
+    //@ts-ignore
+    state => state.searchHistory.isEnabled
+  );
+
   const [searchInput, setSearchInput] = useState('');
   const isDesktopDevice = useMediaQuery('(min-width:805px)');
 
   const handleOnChange = (input: string) => {
-    if (state.searchError) {
-      dispatch({ type: ACTION_TYPE.SEARCH_ERROR, payload: false });
-      dispatch({ type: ACTION_TYPE.REPLACE_CURRENT_MOVIE, payload: {} });
+    if (isError) {
+      dispatch(updateSearchError(false));
+      dispatch(replaceCurrentMedia({}));
     }
     setSearchInput(input);
   };
@@ -74,7 +91,7 @@ export const App: React.FC = (): JSX.Element => {
             value={searchInput}
           />
         </Form>
-        {state.searchHistory.length > 0 && (
+        {searchHistory.length > 0 && (
           <Box
             display={'flex'}
             flexDirection={'row'}
@@ -85,27 +102,19 @@ export const App: React.FC = (): JSX.Element => {
               Search History
             </Typography>
             <HistorySwitch
-              checked={state.isSearchHistoryEnabled}
+              checked={isSearchHistoryEnabled}
               onChange={() =>
-                dispatch({ type: ACTION_TYPE.TOGGLE_SEARCH_HISTORY })
+                dispatch(updateSearchHistoryToggle(!isSearchHistoryEnabled))
               }
             />
           </Box>
         )}
-        {state.isLoading && <CircularProgress />}
+        {isSearchLoading && <CircularProgress />}
       </Container>
       <ResultsSection
         sx={{ flexDirection: isDesktopDevice ? 'row' : 'column' }}>
-        <MovieCard
-          currentMovie={state.currentMovie}
-          isSearchError={state.searchError}
-          dispatch={dispatch}
-        />
-        <SearchHistory
-          dispatch={dispatch}
-          isSearchHistoryEnabled={state.isSearchHistoryEnabled}
-          searchHistory={state.searchHistory}
-        />
+        <MovieCard />
+        <SearchHistory />
       </ResultsSection>
     </Layout>
   );
