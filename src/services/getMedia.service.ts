@@ -29,7 +29,6 @@ export const getMedia = async (dispatch: any, title: string) => {
   } catch (e: any) {
     console.log('getMedia Service Call Error:', e.message);
     dispatch(updateLoading(false));
-    // TODO: fix this error from updating addToSearchHistory
     dispatch(updateSearchError(true));
   }
 };
