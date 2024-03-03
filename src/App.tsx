@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Layout } from 'components/Layout';
 import { SearchHistory } from 'components/SearchHistory';
-import { MovieCard } from 'components/MovieCard';
+import { MediaCard } from 'components/MediaCard';
 import { HistorySwitch } from 'components/HistorySwitch';
 import { TextInputField } from 'components/TextInputField';
 import {
@@ -113,7 +113,7 @@ export const App: React.FC = (): JSX.Element => {
       </Container>
       <ResultsSection
         sx={{ flexDirection: isDesktopDevice ? 'row' : 'column' }}>
-        <MovieCard />
+        <MediaCard />
         <SearchHistory />
       </ResultsSection>
     </Layout>

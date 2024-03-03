@@ -13,19 +13,16 @@ const searchHistorySlice = createSlice({
     addToSearchHistory: (state, action) => {
       console.log('state is equal to:', state);
       if (shouldAddSubmissionToSearchHistory(state, action.payload)) {
-        state.searchHistory.history = [
-          action.payload,
-          ...state.searchHistory.history,
-        ];
+        state.history = [action.payload, ...state.history];
       }
     },
     removeFromSearchHistory: (state, action) => {
-      state.searchHistory.history = state.searchHistory.history.filter(
+      state.history = state.history.filter(
         media => media.Title !== action.payload.Title
       );
     },
     updateSearchHistoryToggle: (state, action) => {
-      state.searchHistory.isEnabled = action.payload;
+      state.isEnabled = action.payload;
     },
   },
 });

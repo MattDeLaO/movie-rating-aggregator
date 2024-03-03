@@ -26,9 +26,9 @@ export const determineOverallAverage = (ratings: Rating[]): number => {
 
 //@ts-ignore
 export const shouldAddSubmissionToSearchHistory = (state, movie: Media) => {
-  if (state.searchHistory.history.length > 0) {
+  if (state.history?.length > 0) {
     let isDuplicate = false;
-    state.searchHistory?.forEach((entry: Media) => {
+    state.history?.forEach((entry: Media) => {
       if (entry.imdbID === movie.imdbID) {
         isDuplicate = true;
       }

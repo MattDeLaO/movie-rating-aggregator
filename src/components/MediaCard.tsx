@@ -25,7 +25,7 @@ const GradientBackground = styled(Box)({
   backgroundImage: 'linear-gradient(#0b010e, rgba(14, 0, 94, 1))',
 });
 
-export const MovieCard = () => {
+export const MediaCard = () => {
   //@ts-ignore
   const currentMedia = useSelector(state => state.media.currentMedia);
   //@ts-ignore

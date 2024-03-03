@@ -20,6 +20,6 @@ export const getStreamingAvailability = async (
       payload: data.result.streamingInfo.us,
     });
   } catch (e: any) {
-    console.log(e.message);
+    console.log('getStreamingAvailability Service Call Error:', e.message);
   }
 };
