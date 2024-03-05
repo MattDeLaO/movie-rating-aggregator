@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
 import {
+  Box,
+  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -6,37 +9,113 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Typography,
 } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux';
+import { BsCheckSquareFill } from 'react-icons/bs';
+import { BsXSquareFill } from 'react-icons/bs';
+import { Media } from 'types/global';
+import { getStreamingAvailability } from 'services/getStreamingAvailability.service';
 
-const rows: any[] = [];
-export const StreamingAvailability = () => (
-  <TableContainer component={Paper}>
-    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-      <TableHead>
-        <TableRow>
-          <TableCell>Streaming Service</TableCell>
-          <TableCell align="right">Subscription</TableCell>
-          <TableCell align="right">Rent</TableCell>
-          <TableCell align="right">Rental Cost</TableCell>
-          <TableCell align="right">Buy</TableCell>
-          <TableCell align="right">Purchase Cost</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {rows?.map((row: any) => (
-          <TableRow
-            key={row.name}
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-            <TableCell component="th" scope="row">
-              {row.name}
-            </TableCell>
-            <TableCell align="right">{row.calories}</TableCell>
-            <TableCell align="right">{row.fat}</TableCell>
-            <TableCell align="right">{row.carbs}</TableCell>
-            <TableCell align="right">{row.protein}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
+type StreamingAvailabilityProps = {
+  currentMedia: Media;
+};
+
+type CheckMarkProps = {
+  isAvailable: boolean;
+};
+
+const CheckMark = ({ isAvailable }: CheckMarkProps) => (
+  <>
+    {isAvailable ? (
+      <BsCheckSquareFill style={{ color: '#00FF43' }} />
+    ) : (
+      <BsXSquareFill style={{ color: '#E90C00' }} />
+    )}
+  </>
 );
+
+export const StreamingAvailability = ({
+  currentMedia,
+}: StreamingAvailabilityProps) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getStreamingAvailability(dispatch, currentMedia.imdbID);
+  }, [currentMedia, dispatch]);
+
+  //@ts-ignore
+  const tableData = useSelector(state => state.streamingAvailability.data);
+  //@ts-ignore
+  // const isLoading = useSelector(state => state.streamingAvailability.isLoading);
+  //@ts-ignore
+  // const isError = useSelector(state => state.streamingAvailability.isError);
+
+  return (
+    <TableContainer
+      component={Paper}
+      sx={{
+        marginBottom: 4,
+        backgroundColor: '#020202',
+        fontFamily: 'Bowlby One SC',
+      }}>
+      <Table
+        sx={{
+          maxWidth: 350,
+          '&.MuiTable-root': {
+            color: 'white',
+          },
+        }}
+        aria-label="simple table">
+        <TableHead
+          sx={{
+            '& .MuiTableCell-root': {
+              color: '#FFFF',
+              textAlign: 'center',
+            },
+          }}>
+          <TableRow>
+            <TableCell>Streaming Service</TableCell>
+            <TableCell align="right">Subscription</TableCell>
+            <TableCell align="right">Rent</TableCell>
+            <TableCell align="right">Rental Cost</TableCell>
+            <TableCell align="right">Buy</TableCell>
+            <TableCell align="right">Purchase Cost</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody
+          sx={{
+            '& .MuiTableCell-root': {
+              color: '#FFFF',
+              textAlign: 'center',
+            },
+          }}>
+          {tableData?.map((row: any) => (
+            <TableRow
+              key={row.service}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableCell component="th" scope="row">
+                {row.service.toUpperCase()}
+              </TableCell>
+              <TableCell align="center">
+                <CheckMark isAvailable={row.subscription} />
+              </TableCell>
+              <TableCell align="center">
+                <CheckMark isAvailable={row.buy} />
+              </TableCell>
+              <TableCell align="center">
+                {row.purchasePrice ? `$${row.purchasePrice}` : 'N/A'}
+              </TableCell>
+              <TableCell align="center">
+                <CheckMark isAvailable={row.rent} />
+              </TableCell>
+              <TableCell align="right">
+                {row.rentalPrice ? `$${row.rentalPrice}` : 'N/A'}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};

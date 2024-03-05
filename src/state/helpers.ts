@@ -40,7 +40,7 @@ export const shouldAddSubmissionToSearchHistory = (state, movie: Media) => {
   }
 };
 
-export const createRowData = (streamingData: any) => {
+export const createStreamTableData = (streamingData: any) => {
   console.log('what is the payload data', streamingData);
   const rows: any = [];
   //@ts-ignore

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Button,
   Chip,
@@ -11,13 +11,12 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { IoClose, IoTrophySharp } from 'react-icons/io5';
-import { getStreamingAvailability } from 'services/getStreamingAvailability.service';
 import RottenTomatoes from 'images/RottenTomatoes.png';
 import IMDb from 'images/IMDb.png';
 import Metacritic from 'images/Metacritic.png';
 import { Media, Rating } from 'types/global';
 import { StreamingAvailability } from './StreamingAvailability';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 type ModalProps = {
   openDialogue: boolean;
@@ -104,11 +103,15 @@ const Details = ({ currentMedia }: DetailsProps) => (
 );
 
 export const Modal = ({ openDialogue, setOpenDialogue }: ModalProps) => {
-  const dispatch = useDispatch();
   //@ts-ignore
   const currentMedia = useSelector(state => state.media.currentMedia);
-  const [showStreamingAvailability, setShowStreamingAvailability] =
-    useState(false);
+  const [showAvailability, setShowAvailability] = useState(false);
+
+  // useEffect(() => {
+  //   if (showAvailability) {
+  //     setShowAvailability(false);
+  //   }
+  // }, [openDialogue]);
   return (
     <Dialog open={openDialogue} onClose={() => setOpenDialogue(false)}>
       <DialogTitle
@@ -137,21 +140,22 @@ export const Modal = ({ openDialogue, setOpenDialogue }: ModalProps) => {
           fontFamily: 'Urbanist',
           color: '#FFFF',
         }}>
-        {showStreamingAvailability ? (
-          <StreamingAvailability />
+        {showAvailability ? (
+          <StreamingAvailability currentMedia={currentMedia} />
         ) : (
           <Details currentMedia={currentMedia} />
         )}
         <Row sx={{ justifyContent: 'center' }}>
-          {/* <Button
+          <Button
             variant="outlined"
             sx={{ color: '#FFFF', fontFamily: 'Bowlby One SC' }}
             onClick={() => {
-              setShowStreamingAvailability(true);
-              getStreamingAvailability(dispatch, currentMovie.imdbID);
+              setShowAvailability(!showAvailability);
             }}>
-            Check Streaming Availability
-          </Button> */}
+            {showAvailability
+              ? 'Back to Details'
+              : 'Check Streaming Availability'}
+          </Button>
         </Row>
       </DialogContent>
     </Dialog>

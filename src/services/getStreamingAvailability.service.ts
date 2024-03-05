@@ -1,4 +1,9 @@
-import { ACTION_TYPE } from 'types/global';
+import {
+  addStreamAvailability,
+  updateLoading,
+  updateStreamingAvailabilityError,
+  //@ts-ignore
+} from 'state/slices/streamingAvailabilitySlice';
 
 export const getStreamingAvailability = async (
   dispatch: any,
@@ -10,16 +15,16 @@ export const getStreamingAvailability = async (
       movieID,
     }),
   };
+  dispatch(updateLoading(true));
   try {
     const data = await fetch(
       '/.netlify/functions/getStreamingAvailability',
       options
     ).then(response => response.json());
-    dispatch({
-      type: ACTION_TYPE.ADD_STREAMING_AVAILABILITY,
-      payload: data.result.streamingInfo.us,
-    });
+    dispatch(addStreamAvailability(data.result?.streamingInfo?.us));
   } catch (e: any) {
     console.log('getStreamingAvailability Service Call Error:', e.message);
+    dispatch(updateStreamingAvailabilityError(true));
   }
+  dispatch(updateLoading(false));
 };
