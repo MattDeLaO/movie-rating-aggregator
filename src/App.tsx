@@ -55,6 +55,7 @@ export const App: React.FC = (): JSX.Element => {
   const handleOnChange = (input: string) => {
     if (isError) {
       dispatch(updateSearchError(false));
+      //@ts-ignore
       dispatch(replaceCurrentMedia({}));
     }
     setSearchInput(input);

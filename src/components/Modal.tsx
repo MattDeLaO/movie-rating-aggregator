@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Button,
   Chip,
@@ -16,7 +16,7 @@ import IMDb from 'images/IMDb.png';
 import Metacritic from 'images/Metacritic.png';
 import { Media, Rating } from 'types/global';
 import { StreamingAvailability } from './StreamingAvailability';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from 'state/hooks';
 
 type ModalProps = {
   openDialogue: boolean;
@@ -103,15 +103,8 @@ const Details = ({ currentMedia }: DetailsProps) => (
 );
 
 export const Modal = ({ openDialogue, setOpenDialogue }: ModalProps) => {
-  //@ts-ignore
-  const currentMedia = useSelector(state => state.media.currentMedia);
+  const currentMedia = useAppSelector(state => state.media.currentMedia);
   const [showAvailability, setShowAvailability] = useState(false);
-
-  // useEffect(() => {
-  //   if (showAvailability) {
-  //     setShowAvailability(false);
-  //   }
-  // }, [openDialogue]);
   return (
     <Dialog open={openDialogue} onClose={() => setOpenDialogue(false)}>
       <DialogTitle
@@ -121,7 +114,10 @@ export const Modal = ({ openDialogue, setOpenDialogue }: ModalProps) => {
           fontWeight: 'bold',
           color: '#FFFF',
         }}>
-        {`${currentMedia.Title} (${currentMedia.Year})`}
+        {
+          //@ts-ignore
+          `${currentMedia?.Title} (${currentMedia?.Year})`
+        }
       </DialogTitle>
       <IconButton
         aria-label="close"
@@ -141,8 +137,12 @@ export const Modal = ({ openDialogue, setOpenDialogue }: ModalProps) => {
           color: '#FFFF',
         }}>
         {showAvailability ? (
+          //@ts-ignore
+
           <StreamingAvailability currentMedia={currentMedia} />
         ) : (
+          //@ts-ignore
+
           <Details currentMedia={currentMedia} />
         )}
         <Row sx={{ justifyContent: 'center' }}>
