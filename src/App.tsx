@@ -14,14 +14,13 @@ import {
 import { styled } from '@mui/material/styles';
 //@ts-ignore
 import { getMedia } from 'services/getMedia.service';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   replaceCurrentMedia,
   updateSearchError,
-  //@ts-ignore
 } from 'state/slices/mediaSlice';
-//@ts-ignore
 import { updateSearchHistoryToggle } from 'state/slices/searchHistorySlice';
+import { useAppSelector } from 'state/hooks';
 
 const Form = styled('form')({
   display: 'flex',
@@ -38,14 +37,10 @@ const ResultsSection = styled(Box)({
 
 export const App: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
-  //@ts-ignore
-  const isError = useSelector(state => state.media.isError);
-  //@ts-ignore
-  const searchHistory = useSelector(state => state.searchHistory.history);
-  //@ts-ignore
-  const isSearchLoading = useSelector(state => state.media.isLoading);
-  const isSearchHistoryEnabled = useSelector(
-    //@ts-ignore
+  const isError = useAppSelector(state => state.media.isError);
+  const searchHistory = useAppSelector(state => state.searchHistory.history);
+  const isSearchLoading = useAppSelector(state => state.media.isLoading);
+  const isSearchHistoryEnabled = useAppSelector(
     state => state.searchHistory.isEnabled
   );
 

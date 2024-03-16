@@ -31,7 +31,7 @@ export type Media = {
   Ratings: Rating[];
 };
 
-export type StreamingService = {
+export type StreamingServiceResult = {
   service: string;
   streamingType: string;
   price: {

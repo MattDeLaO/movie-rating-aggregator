@@ -1,4 +1,10 @@
-import { Media, Rating, StreamingService, StreamingObject } from 'types/global';
+import {
+  Media,
+  Rating,
+  StreamingServiceResult,
+  StreamingObject,
+} from 'types/global';
+import { SearchHistoryState } from 'state/slices/searchHistorySlice';
 
 export const determineOverallAverage = (ratings: Rating[]): number => {
   const ratingValues: any[] = [];
@@ -24,8 +30,10 @@ export const determineOverallAverage = (ratings: Rating[]): number => {
   return Math.round(sum / convertedRatings.length);
 };
 
-//@ts-ignore
-export const shouldAddSubmissionToSearchHistory = (state, movie: Media) => {
+export const shouldAddSubmissionToSearchHistory = (
+  state: SearchHistoryState,
+  movie: Media
+) => {
   if (state.history?.length > 0) {
     let isDuplicate = false;
     state.history?.forEach((entry: Media) => {
@@ -43,71 +51,63 @@ export const shouldAddSubmissionToSearchHistory = (state, movie: Media) => {
 export const createStreamTableData = (streamingData: any) => {
   console.log('what is the payload data', streamingData);
   const rows: any = [];
-  //@ts-ignore
-  const objectRef: StreamingObject = {};
+  let objectRef!: StreamingObject;
 
-  streamingData.forEach((streamingService: StreamingService) => {
+  streamingData.forEach((streamingService: StreamingServiceResult) => {
     const { service } = streamingService;
     if (
-      //@ts-ignore
-      !objectRef[service] &&
+      !objectRef[service as keyof StreamingObject] &&
       streamingService.streamingType !== 'addon'
     ) {
       const coreProperties = {
         service,
-        //@ts-ignore
         subscription: streamingService.streamingType === 'subscription',
       };
       //@ts-ignore
-      objectRef[service] = coreProperties;
-
-      //@ts-ignore
+      objectRef[service as keyof StreamingObject] = coreProperties;
 
       if (streamingService.streamingType === 'buy') {
         //@ts-ignore
 
-        objectRef[service].buy = true;
+        objectRef[service as keyof StreamingObject].buy = true;
         //@ts-ignore
 
-        objectRef[service].purchasePrice = streamingService.price.amount;
-        //@ts-ignore
+        objectRef[service as keyof StreamingObject].purchasePrice =
+          streamingService.price.amount;
       } else if (streamingService.streamingType === 'rent') {
         //@ts-ignore
 
-        objectRef[service].rent = true;
+        objectRef[service as keyof StreamingObject].rent = true;
         //@ts-ignore
 
-        objectRef[service].rentalPrice = streamingService.price.amount;
+        objectRef[service as keyof StreamingObject].rentalPrice =
+          streamingService.price.amount;
       }
     } else if (
-      //@ts-ignore
-      objectRef[service] &&
+      objectRef[service as keyof StreamingObject] &&
       streamingService.streamingType !== 'addon'
     ) {
-      //@ts-ignore
-
       if (streamingService.streamingType === 'buy') {
         //@ts-ignore
 
-        objectRef[service].buy = true;
+        objectRef[service as keyof StreamingObject].buy = true;
         //@ts-ignore
 
-        objectRef[service].purchasePrice = streamingService.price.amount;
-        //@ts-ignore
+        objectRef[service as keyof StreamingObject].purchasePrice =
+          streamingService.price.amount;
       } else if (streamingService.streamingType === 'rent') {
         //@ts-ignore
 
-        objectRef[service].rent = true;
+        objectRef[service as keyof StreamingObject].rent = true;
         //@ts-ignore
 
-        objectRef[service].rentalPrice = streamingService.price.amount;
+        objectRef[service as keyof StreamingObject].rentalPrice =
+          streamingService.price.amount;
       }
     }
   });
-  //@ts-ignore
   for (const obj in objectRef) {
-    //@ts-ignore
-    rows.push(objectRef[obj]);
+    rows.push(objectRef[obj as keyof StreamingObject]);
   }
   console.log('custom rows:', rows);
   return rows;

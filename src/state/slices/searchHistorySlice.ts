@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { shouldAddSubmissionToSearchHistory } from 'state/helpers';
 import { Media } from 'types/global';
 
-type SearchHistoryState = {
+export type SearchHistoryState = {
   history: Media[];
   isEnabled: boolean;
 };

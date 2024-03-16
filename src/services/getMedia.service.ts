@@ -2,9 +2,7 @@ import {
   addMedia,
   updateLoading,
   updateSearchError,
-  //@ts-ignore
 } from 'state/slices/mediaSlice';
-//@ts-ignore
 import { addToSearchHistory } from 'state/slices/searchHistorySlice';
 
 export const getMedia = async (dispatch: any, title: string) => {

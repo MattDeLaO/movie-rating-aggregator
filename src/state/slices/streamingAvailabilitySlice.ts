@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createStreamTableData } from '../helpers';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { StreamingService } from 'types/global';
+import { StreamingServiceResult } from 'types/global';
 
 type StreamingAvailabilityState = {
   isLoading: boolean;
   isError: boolean;
-  data: [] | StreamingService;
+  data: [] | StreamingServiceResult;
 };
 const initialState: StreamingAvailabilityState = {
   isLoading: false,
@@ -18,7 +18,10 @@ const streamingAvailabilitySlice = createSlice({
   name: 'streamingAvailability',
   initialState,
   reducers: {
-    addStreamAvailability: (state, action: PayloadAction<StreamingService>) => {
+    addStreamAvailability: (
+      state,
+      action: PayloadAction<StreamingServiceResult>
+    ) => {
       state.data = createStreamTableData(action.payload);
     },
     updateLoading: (state, action: PayloadAction<boolean>) => {

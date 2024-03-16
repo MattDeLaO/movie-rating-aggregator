@@ -10,7 +10,7 @@ import {
 import { styled } from '@mui/material/styles';
 import { StyledPercentage } from './StyledPercentage';
 import { Modal } from 'components/Modal';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from 'state/hooks';
 
 const GradientBackground = styled(Box)({
   display: 'flex',
@@ -26,11 +26,10 @@ const GradientBackground = styled(Box)({
 });
 
 export const MediaCard = () => {
-  //@ts-ignore
-  const currentMedia = useSelector(state => state.media.currentMedia);
-  //@ts-ignore
-  const isSearchError = useSelector(state => state.media.isError);
+  const currentMedia = useAppSelector(state => state.media.currentMedia);
+  const isSearchError = useAppSelector(state => state.media.isError);
   const shouldRenderMovieCard =
+    //@ts-ignore
     !currentMedia.Error && Object.keys(currentMedia).length !== 0;
   const [openDialogue, setOpenDialogue] = useState(false);
 
@@ -49,7 +48,10 @@ export const MediaCard = () => {
               <CardMedia
                 component="img"
                 height="auto"
-                image={currentMedia.Poster}
+                image={
+                  //@ts-ignore
+                  currentMedia.Poster
+                }
                 alt="Movie Poster"
                 sx={{
                   borderRadius: 1,
@@ -60,7 +62,10 @@ export const MediaCard = () => {
                 <Typography
                   variant="h6"
                   sx={{ color: '#FFFF', fontFamily: 'Bowlby One SC' }}>
-                  {`${currentMedia.Title} (${currentMedia.Year})`}
+                  {
+                    //@ts-ignore
+                    `${currentMedia.Title} (${currentMedia.Year})`
+                  }
                 </Typography>
                 <Typography sx={{ color: '#FFFF', fontFamily: 'Urbanist' }}>
                   More Details
@@ -70,7 +75,13 @@ export const MediaCard = () => {
                   sx={{ color: '#FFFF', fontFamily: 'Bowlby One SC' }}>
                   Average Rating:
                 </Typography>
-                <StyledPercentage overallRating={currentMedia.averageRating} />
+
+                <StyledPercentage
+                  overallRating={
+                    //@ts-ignore
+                    currentMedia.averageRating
+                  }
+                />
               </CardContent>
             </CardActionArea>
           </Card>

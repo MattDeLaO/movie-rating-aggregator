@@ -2,7 +2,6 @@ import {
   addStreamAvailability,
   updateLoading,
   updateStreamingAvailabilityError,
-  //@ts-ignore
 } from 'state/slices/streamingAvailabilitySlice';
 
 export const getStreamingAvailability = async (

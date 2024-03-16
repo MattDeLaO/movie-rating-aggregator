@@ -12,11 +12,10 @@ import {
 import { styled } from '@mui/material/styles';
 import { StyledPercentage } from './StyledPercentage';
 import { Media } from '../types/global';
-import { useSelector, useDispatch } from 'react-redux';
-//@ts-ignore
+import { useDispatch } from 'react-redux';
 import { removeFromSearchHistory } from 'state/slices/searchHistorySlice';
-//@ts-ignore
 import { replaceCurrentMedia } from 'state/slices/mediaSlice';
+import { useAppSelector } from 'state/hooks';
 
 const SearchHistorySection = styled(Box)({
   borderRadius: 2,
@@ -30,10 +29,8 @@ const SearchHistorySection = styled(Box)({
 
 export const SearchHistory = () => {
   const dispatch = useDispatch();
-  //@ts-ignore
-  const searchHistory = useSelector(state => state.searchHistory.history);
-  const isSearchHistoryEnabled = useSelector(
-    //@ts-ignore
+  const searchHistory = useAppSelector(state => state.searchHistory.history);
+  const isSearchHistoryEnabled = useAppSelector(
     state => state.searchHistory.isEnabled
   );
   const isSearchHistory = Object.keys(searchHistory).length !== 0;
