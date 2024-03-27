@@ -12,7 +12,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-//@ts-ignore
 import { getMedia } from 'services/getMedia.service';
 import { useDispatch } from 'react-redux';
 import {
@@ -50,7 +49,6 @@ export const App: React.FC = (): JSX.Element => {
   const handleOnChange = (input: string) => {
     if (isError) {
       dispatch(updateSearchError(false));
-      //@ts-ignore
       dispatch(replaceCurrentMedia({}));
     }
     setSearchInput(input);

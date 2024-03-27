@@ -19,7 +19,7 @@ import { getStreamingAvailability } from 'services/getStreamingAvailability.serv
 import { useAppSelector } from 'state/hooks';
 
 type StreamingAvailabilityProps = {
-  currentMedia: Media;
+  currentMedia: null | Media;
 };
 
 type CheckMarkProps = {
@@ -42,7 +42,9 @@ export const StreamingAvailability = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getStreamingAvailability(dispatch, currentMedia.imdbID);
+    if (currentMedia?.imdbID) {
+      getStreamingAvailability(dispatch, currentMedia.imdbID);
+    }
   }, [currentMedia, dispatch]);
 
   const tableData = useAppSelector(state => state.streamingAvailability.data);
@@ -86,33 +88,30 @@ export const StreamingAvailability = ({
               textAlign: 'center',
             },
           }}>
-          {
-            //@ts-ignore
-            tableData?.map((row: any) => (
-              <TableRow
-                key={row.service}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell component="th" scope="row">
-                  {row.service.toUpperCase()}
-                </TableCell>
-                <TableCell align="center">
-                  <CheckMark isAvailable={row.subscription} />
-                </TableCell>
-                <TableCell align="center">
-                  <CheckMark isAvailable={row.buy} />
-                </TableCell>
-                <TableCell align="center">
-                  {row.purchasePrice ? `$${row.purchasePrice}` : 'N/A'}
-                </TableCell>
-                <TableCell align="center">
-                  <CheckMark isAvailable={row.rent} />
-                </TableCell>
-                <TableCell align="right">
-                  {row.rentalPrice ? `$${row.rentalPrice}` : 'N/A'}
-                </TableCell>
-              </TableRow>
-            ))
-          }
+          {tableData?.map((row: any) => (
+            <TableRow
+              key={row.service}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableCell component="th" scope="row">
+                {row.service.toUpperCase()}
+              </TableCell>
+              <TableCell align="center">
+                <CheckMark isAvailable={row.subscription} />
+              </TableCell>
+              <TableCell align="center">
+                <CheckMark isAvailable={row.buy} />
+              </TableCell>
+              <TableCell align="center">
+                {row.purchasePrice ? `$${row.purchasePrice}` : 'N/A'}
+              </TableCell>
+              <TableCell align="center">
+                <CheckMark isAvailable={row.rent} />
+              </TableCell>
+              <TableCell align="right">
+                {row.rentalPrice ? `$${row.rentalPrice}` : 'N/A'}
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

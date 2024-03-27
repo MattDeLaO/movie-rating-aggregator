@@ -18,7 +18,6 @@ const searchHistorySlice = createSlice({
   initialState,
   reducers: {
     addToSearchHistory: (state, action: PayloadAction<Media>) => {
-      console.log('state is equal to:', state);
       if (shouldAddSubmissionToSearchHistory(state, action.payload)) {
         state.history = [action.payload, ...state.history];
       }

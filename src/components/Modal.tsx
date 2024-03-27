@@ -24,7 +24,7 @@ type ModalProps = {
 };
 
 type DetailsProps = {
-  currentMedia: Media;
+  currentMedia: null | Media;
 };
 
 const Row = styled(Container)({
@@ -51,8 +51,8 @@ const determineSourcePicture = (source: string) => {
 const Details = ({ currentMedia }: DetailsProps) => (
   <>
     <Typography variant="h6" mb={2} sx={{ fontFamily: 'Urbanist' }}>
-      {currentMedia.Genre &&
-        currentMedia.Genre.split(',').map((genre: string) => (
+      {currentMedia?.Genre &&
+        currentMedia?.Genre.split(',').map((genre: string) => (
           <Chip
             key={genre}
             label={genre}
@@ -66,9 +66,9 @@ const Details = ({ currentMedia }: DetailsProps) => (
         ))}
     </Typography>
     <Typography mb={4} sx={{ fontFamily: 'Urbanist' }}>
-      {currentMedia.Plot}
+      {currentMedia?.Plot}
     </Typography>
-    {currentMedia.Ratings?.map((rating: Rating) => (
+    {currentMedia?.Ratings?.map((rating: Rating) => (
       <Row key={rating.Source}>
         <div style={{ width: 50, height: 50 }}>
           <img
@@ -83,7 +83,7 @@ const Details = ({ currentMedia }: DetailsProps) => (
         <Typography fontWeight="bold">{rating.Value}</Typography>
       </Row>
     ))}
-    {currentMedia.Awards !== 'N/A' && (
+    {currentMedia?.Awards !== 'N/A' && (
       <Row sx={{ justifyContent: 'flex-start' }}>
         <IoTrophySharp
           style={{
@@ -95,7 +95,7 @@ const Details = ({ currentMedia }: DetailsProps) => (
           }}
         />
         <Typography fontWeight="bold" fontFamily="Urbanist">
-          {currentMedia.Awards}
+          {currentMedia?.Awards}
         </Typography>
       </Row>
     )}
@@ -114,10 +114,7 @@ export const Modal = ({ openDialogue, setOpenDialogue }: ModalProps) => {
           fontWeight: 'bold',
           color: '#FFFF',
         }}>
-        {
-          //@ts-ignore
-          `${currentMedia?.Title} (${currentMedia?.Year})`
-        }
+        {`${currentMedia?.Title} (${currentMedia?.Year})`}
       </DialogTitle>
       <IconButton
         aria-label="close"
@@ -137,12 +134,8 @@ export const Modal = ({ openDialogue, setOpenDialogue }: ModalProps) => {
           color: '#FFFF',
         }}>
         {showAvailability ? (
-          //@ts-ignore
-
           <StreamingAvailability currentMedia={currentMedia} />
         ) : (
-          //@ts-ignore
-
           <Details currentMedia={currentMedia} />
         )}
         <Row sx={{ justifyContent: 'center' }}>

@@ -6,13 +6,13 @@ import { Media } from 'types/global';
 type MediaState = {
   isLoading: boolean;
   isError: boolean;
-  currentMedia: {} | Media;
+  currentMedia: null | Media;
 };
 
 const initialState: MediaState = {
   isLoading: false,
   isError: false,
-  currentMedia: {},
+  currentMedia: null,
 };
 
 const mediaSlice = createSlice({
@@ -30,7 +30,7 @@ const mediaSlice = createSlice({
         currentMedia: action.payload,
       };
     },
-    replaceCurrentMedia: (state, action: PayloadAction<Media>) => ({
+    replaceCurrentMedia: (state, action: PayloadAction<{} | Media>) => ({
       ...state,
       currentMovie: action.payload,
     }),

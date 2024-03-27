@@ -28,10 +28,14 @@ const GradientBackground = styled(Box)({
 export const MediaCard = () => {
   const currentMedia = useAppSelector(state => state.media.currentMedia);
   const isSearchError = useAppSelector(state => state.media.isError);
-  const shouldRenderMovieCard =
-    //@ts-ignore
-    !currentMedia.Error && Object.keys(currentMedia).length !== 0;
   const [openDialogue, setOpenDialogue] = useState(false);
+
+  if (currentMedia === null) {
+    return;
+  }
+
+  const shouldRenderMovieCard =
+    !currentMedia.Error && Object.keys(currentMedia).length !== 0;
 
   if (isSearchError) {
     return (
@@ -48,10 +52,7 @@ export const MediaCard = () => {
               <CardMedia
                 component="img"
                 height="auto"
-                image={
-                  //@ts-ignore
-                  currentMedia.Poster
-                }
+                image={currentMedia?.Poster}
                 alt="Movie Poster"
                 sx={{
                   borderRadius: 1,
@@ -62,10 +63,7 @@ export const MediaCard = () => {
                 <Typography
                   variant="h6"
                   sx={{ color: '#FFFF', fontFamily: 'Bowlby One SC' }}>
-                  {
-                    //@ts-ignore
-                    `${currentMedia.Title} (${currentMedia.Year})`
-                  }
+                  {`${currentMedia?.Title} (${currentMedia?.Year})`}
                 </Typography>
                 <Typography sx={{ color: '#FFFF', fontFamily: 'Urbanist' }}>
                   More Details
@@ -77,10 +75,7 @@ export const MediaCard = () => {
                 </Typography>
 
                 <StyledPercentage
-                  overallRating={
-                    //@ts-ignore
-                    currentMedia.averageRating
-                  }
+                  overallRating={currentMedia?.averageRating || 0}
                 />
               </CardContent>
             </CardActionArea>

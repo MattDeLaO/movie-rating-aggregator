@@ -63,46 +63,21 @@ export const createStreamTableData = (streamingData: any) => {
         service,
         subscription: streamingService.streamingType === 'subscription',
       };
-      //@ts-ignore
-      objectRef[service as keyof StreamingObject] = coreProperties;
-
+      objectRef = coreProperties;
       if (streamingService.streamingType === 'buy') {
-        //@ts-ignore
-
-        objectRef[service as keyof StreamingObject].buy = true;
-        //@ts-ignore
-
-        objectRef[service as keyof StreamingObject].purchasePrice =
-          streamingService.price.amount;
+        objectRef.buy = true;
+        objectRef.purchasePrice = streamingService.price.amount;
       } else if (streamingService.streamingType === 'rent') {
-        //@ts-ignore
-
-        objectRef[service as keyof StreamingObject].rent = true;
-        //@ts-ignore
-
-        objectRef[service as keyof StreamingObject].rentalPrice =
-          streamingService.price.amount;
+        objectRef.rent = true;
+        objectRef.rentalPrice = streamingService.price.amount;
       }
-    } else if (
-      objectRef[service as keyof StreamingObject] &&
-      streamingService.streamingType !== 'addon'
-    ) {
+    } else if (objectRef && streamingService.streamingType !== 'addon') {
       if (streamingService.streamingType === 'buy') {
-        //@ts-ignore
-
-        objectRef[service as keyof StreamingObject].buy = true;
-        //@ts-ignore
-
-        objectRef[service as keyof StreamingObject].purchasePrice =
-          streamingService.price.amount;
+        objectRef.buy = true;
+        objectRef.purchasePrice = streamingService.price.amount;
       } else if (streamingService.streamingType === 'rent') {
-        //@ts-ignore
-
-        objectRef[service as keyof StreamingObject].rent = true;
-        //@ts-ignore
-
-        objectRef[service as keyof StreamingObject].rentalPrice =
-          streamingService.price.amount;
+        objectRef.rent = true;
+        objectRef.rentalPrice = streamingService.price.amount;
       }
     }
   });
