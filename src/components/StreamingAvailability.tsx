@@ -53,9 +53,16 @@ export const StreamingAvailability = ({
   );
 
   return (
-    <>
+    <Box sx={{ minWidth: 350 }}>
       {isTableLoading ? (
-        <CircularProgress />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <CircularProgress />
+        </Box>
       ) : (
         <Box>
           {tableData ? (
@@ -151,6 +158,6 @@ export const StreamingAvailability = ({
           )}
         </Box>
       )}
-    </>
+    </Box>
   );
 };
