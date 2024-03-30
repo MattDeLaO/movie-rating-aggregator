@@ -1,4 +1,3 @@
-import { FiPlus, FiMinus } from 'react-icons/fi';
 import {
   Avatar,
   Box,

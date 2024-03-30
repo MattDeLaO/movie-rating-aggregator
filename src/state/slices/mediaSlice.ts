@@ -30,9 +30,9 @@ const mediaSlice = createSlice({
         currentMedia: action.payload,
       };
     },
-    replaceCurrentMedia: (state, action: PayloadAction<{} | Media>) => ({
+    replaceCurrentMedia: (state, action: PayloadAction<null | Media>) => ({
       ...state,
-      currentMovie: action.payload,
+      currentMedia: action.payload,
     }),
     updateSearchError: (state, action: PayloadAction<boolean>) => ({
       ...state,

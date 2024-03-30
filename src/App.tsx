@@ -44,7 +44,7 @@ export const App: React.FC = (): JSX.Element => {
   const handleOnChange = (input: string) => {
     if (isError) {
       dispatch(updateSearchError(false));
-      dispatch(replaceCurrentMedia({}));
+      dispatch(replaceCurrentMedia(null));
     }
     setSearchInput(input);
   };
