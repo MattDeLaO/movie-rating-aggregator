@@ -16,6 +16,7 @@ import { useDispatch } from 'react-redux';
 import { removeFromSearchHistory } from 'state/slices/searchHistorySlice';
 import { replaceCurrentMedia } from 'state/slices/mediaSlice';
 import { useAppSelector } from 'state/hooks';
+import { FaTrashAlt } from 'react-icons/fa';
 
 const SearchHistorySection = styled(Box)({
   borderRadius: 2,
@@ -41,24 +42,23 @@ export const SearchHistory = () => {
         <List>
           {searchHistory.map((media: Media) => (
             <ListItem key={media.imdbID}>
-              <ListItemAvatar>
-                <Avatar alt={media.Title} src={media.Poster} />
-              </ListItemAvatar>
-              <ListItemText sx={{ fontWeight: 'bold', fontFamily: 'Urbanist' }}>
-                {media.Title}
-                <StyledPercentage overallRating={media.averageRating} small />
-              </ListItemText>
+              <ListItemButton
+                onClick={() => dispatch(replaceCurrentMedia(media))}>
+                <ListItemAvatar>
+                  <Avatar alt={media.Title} src={media.Poster} />
+                </ListItemAvatar>
+                <ListItemText
+                  sx={{ fontWeight: 'bold', fontFamily: 'Urbanist' }}>
+                  {media.Title}
+                  <StyledPercentage overallRating={media.averageRating} small />
+                </ListItemText>
+              </ListItemButton>
               <ListItemSecondaryAction
                 sx={{ display: 'flex', flexDirection: 'row' }}>
                 <ListItemButton
-                  sx={{ color: '#00ff1a' }}
-                  onClick={() => dispatch(replaceCurrentMedia(media))}>
-                  <FiPlus />
-                </ListItemButton>
-                <ListItemButton
                   sx={{ color: '#ff0400' }}
                   onClick={() => dispatch(removeFromSearchHistory(media))}>
-                  <FiMinus />
+                  <FaTrashAlt />
                 </ListItemButton>
               </ListItemSecondaryAction>
             </ListItem>
