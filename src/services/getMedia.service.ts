@@ -24,7 +24,7 @@ export const getMedia = async (dispatch: any, title: string) => {
       dispatch(addToSearchHistory(data));
     }
   } catch (e: any) {
-    console.log('getMedia Service Call Error:', e.message);
+    console.error('getMedia Service Call Error:', e.message);
     dispatch(updateSearchError(true));
   }
   dispatch(updateLoading(false));

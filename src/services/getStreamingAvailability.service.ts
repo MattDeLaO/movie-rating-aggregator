@@ -22,7 +22,7 @@ export const getStreamingAvailability = async (
     ).then(response => response.json());
     dispatch(addStreamAvailability(data.result?.streamingInfo?.us));
   } catch (e: any) {
-    console.log('getStreamingAvailability Service Call Error:', e.message);
+    console.error('getStreamingAvailability Service Call Error:', e.message);
     dispatch(updateStreamingAvailabilityError(true));
   }
   dispatch(updateLoading(false));

@@ -14,7 +14,7 @@ export const handler = async event => {
       body: JSON.stringify(data),
     };
   } catch (e) {
-    console.log('REQUEST_ERROR:', e.message);
+    console.error('REQUEST_ERROR:', e.message);
     return {
       statusCode: 400,
       body: e.stack,

@@ -49,41 +49,40 @@ export const shouldAddSubmissionToSearchHistory = (
 };
 
 export const createStreamTableData = (streamingData: any) => {
-  console.log('what is the payload data', streamingData);
   const rows: any = [];
-  let objectRef!: StreamingObject;
-
+  let objectRef: any = {};
   streamingData.forEach((streamingService: StreamingServiceResult) => {
     const { service } = streamingService;
-    if (
-      !objectRef[service as keyof StreamingObject] &&
-      streamingService.streamingType !== 'addon'
-    ) {
-      const coreProperties = {
+
+    if (streamingService.streamingType === 'addon') {
+      return;
+    }
+
+    if (!(service in objectRef)) {
+      objectRef[service] = {
         service,
-        subscription: streamingService.streamingType === 'subscription',
       };
-      objectRef = coreProperties;
-      if (streamingService.streamingType === 'buy') {
-        objectRef.buy = true;
-        objectRef.purchasePrice = streamingService.price.amount;
-      } else if (streamingService.streamingType === 'rent') {
-        objectRef.rent = true;
-        objectRef.rentalPrice = streamingService.price.amount;
-      }
-    } else if (objectRef && streamingService.streamingType !== 'addon') {
-      if (streamingService.streamingType === 'buy') {
-        objectRef.buy = true;
-        objectRef.purchasePrice = streamingService.price.amount;
-      } else if (streamingService.streamingType === 'rent') {
-        objectRef.rent = true;
-        objectRef.rentalPrice = streamingService.price.amount;
-      }
+    }
+    objectRef[service][streamingService.streamingType] =
+      streamingService.streamingType;
+
+    if (
+      'buy' in objectRef[service] &&
+      !('purchasePrice' in objectRef[service])
+    ) {
+      objectRef[service].purchasePrice = streamingService?.price.amount;
+    }
+
+    if (
+      'rent' in objectRef[service] &&
+      !('rentalPrice' in objectRef[service])
+    ) {
+      objectRef[service].rentalPrice = streamingService?.price.amount;
     }
   });
-  for (const obj in objectRef) {
-    rows.push(objectRef[obj as keyof StreamingObject]);
+
+  for (let obj in objectRef) {
+    rows.push(objectRef[obj]);
   }
-  console.log('custom rows:', rows);
   return rows;
 };

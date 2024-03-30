@@ -6,12 +6,12 @@ import { StreamingServiceResult } from 'types/global';
 type StreamingAvailabilityState = {
   isLoading: boolean;
   isError: boolean;
-  data: [] | StreamingServiceResult;
+  data: null | StreamingServiceResult[];
 };
 const initialState: StreamingAvailabilityState = {
   isLoading: false,
   isError: false,
-  data: [],
+  data: null,
 };
 
 const streamingAvailabilitySlice = createSlice({

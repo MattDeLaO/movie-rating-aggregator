@@ -56,6 +56,7 @@ export const StreamingAvailability = ({
         marginBottom: 4,
         backgroundColor: '#020202',
         fontFamily: 'Bowlby One SC',
+        minWidth: 350,
       }}>
       <Table
         sx={{
